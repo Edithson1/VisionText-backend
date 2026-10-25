@@ -29,10 +29,11 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copiar código
-COPY . .
+COPY model_cache /app/model_cache
+COPY --exclude=model_cache . .
 
 # Crear directorios necesarios
-RUN mkdir -p /app/faiss_indices /app/model_cache
+RUN mkdir -p /app/faiss_indices 
 
 # Exponer puerto
 EXPOSE 8000

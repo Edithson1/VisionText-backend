@@ -12,7 +12,6 @@ __pycache__/
 .env.*
 
 # Datos pesados o generados en tiempo de ejecución (van en volúmenes)
-model_cache/
 faiss_indices/
 
 # El dataset se carga vía API con load_dataset.py, no forma parte de la imagen
