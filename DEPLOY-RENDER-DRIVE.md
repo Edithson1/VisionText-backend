@@ -7,6 +7,10 @@ y miniaturas. Supabase conserva el catálogo, las descripciones, los IDs de Driv
 y los vectores para reconstruir la búsqueda. Los archivos de Drive no se hacen
 públicos: la web y Android siguen usando las URLs de la API del catálogo.
 
+La organización de archivos privados está en [ENVIRONMENT.md](ENVIRONMENT.md).
+Tu contraseña de Supabase se escribe en **`.env.render`, variable `POSTGRES_PASSWORD`**.
+Las plantillas `.example` se conservan sin secretos.
+
 ## 1. Autorizar Google Drive y crear la carpeta
 
 El ID de cliente está preparado en los ejemplos. El secreto del cliente y el
@@ -46,6 +50,15 @@ Copia a Render los valores de `GOOGLE_DRIVE_CLIENT_SECRET`,
 `GOOGLE_DRIVE_REFRESH_TOKEN` y `GOOGLE_DRIVE_FOLDER_ID` que contiene `.env.drive`.
 No incluyas las comillas que usa el archivo para delimitar los valores.
 
+El autorizador prepara también `.env.render` con esos valores. Si ya autorizaste
+Google con una versión anterior del asistente, ejecuta:
+
+```powershell
+.\.venv\windows\Scripts\python.exe scripts\prepare_render_env.py
+```
+
+Así completas la configuración de nube en un solo archivo privado: `.env.render`.
+
 Si Google mantiene una app externa en estado **Testing**, los refresh tokens de
 Drive pueden caducar a los siete días. Para uso continuo configura el estado de
 publicación apropiado o vuelve a autorizar la cuenta cuando sea necesario.
@@ -59,7 +72,8 @@ para `anon` ni `authenticated`. La aplicación usa su propia autorización FastA
 y se conecta directamente por PostgreSQL; no necesita la clave `service_role`.
 El esquema revisable está en [supabase/schema.sql](supabase/schema.sql).
 
-En Render usa los campos separados del archivo [.env.render.example](.env.render.example):
+En Render usa los campos separados de tu `.env.render`, generado desde
+[.env.render.example](.env.render.example):
 
 | Variable | Valor |
 |---|---|

@@ -55,6 +55,9 @@ def main():
     print(f"Carpetas listas: https://drive.google.com/drive/folders/{storage.folder_id}")
     print(f"Variables guardadas en {output.name}. Copia sus VALORES a Render (sin las comillas del archivo).")
     print("El secreto y el refresh token no se imprimen. La base de datos se configura por separado.")
+    from scripts.prepare_render_env import prepare_render_env
+    prepare_render_env(ROOT)
+    print("Configuración unificada en .env.render. Completa ahí POSTGRES_PASSWORD con la contraseña de Supabase.")
 
 
 if __name__ == "__main__":

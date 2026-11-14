@@ -2,7 +2,8 @@
 Sistema que integra un modelo multimodal CLIP, permitiendo la interpretación y relación de imágenes y texto de manera interactiva.
 
 - Despliegue en Railway, CI/CD y referencia de endpoints: [DEPLOY.md](DEPLOY.md)
-- Variables de entorno: [.env.example](.env.example)
+- Variables de entorno y contraseña de Supabase: [ENVIRONMENT.md](ENVIRONMENT.md).
+- Plantillas públicas: [.env.example](.env.example) (local) y [.env.render.example](.env.render.example) (nube).
 - Medición del perfil ligero y límites de Render: [reports/COMPARACION-RENDER.md](reports/COMPARACION-RENDER.md)
 - Despliegue preparado para **Edithson1/VisionText-backend**: [Render + Google Drive + Supabase](DEPLOY-RENDER-DRIVE.md).
 
