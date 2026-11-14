@@ -131,6 +131,9 @@ con un lado máximo de 1600 píxeles. Render conserva una copia reconstruible de
 ## Evidencia y pendientes
 
 - Proyecto Supabase consultado mediante su conector y esquema preparado allí.
+- Imagen Docker compilada y 46 pruebas correctas en Windows y Linux. La
+  [prueba de integración](https://github.com/Edithson1/VisionText-backend/actions/runs/43551289437)
+  con CLIP real y Drive simulado pasó bajo 512 MB sin swap: pico de 422,9 MB y cero OOM.
 - Operaciones Drive probadas contra un servidor HTTP local que reproduce las
   rutas oficiales, incluyendo OAuth refresh, carpetas, paginación, carga,
   lectura, borrado, 401, 403, 429, 503 y timeout.

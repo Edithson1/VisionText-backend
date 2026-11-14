@@ -59,6 +59,34 @@ subida, búsqueda por texto e imagen, descarga, validación, una imagen de 4 MP,
 cuatro búsquedas simultáneas y borrado. Los logs del workflow muestran los
 contadores reales de memoria del cgroup.
 
+La ejecución [43551289437](https://github.com/Edithson1/VisionText-backend/actions/runs/43551289437),
+commit `195b61bc4656c32633d49bcda14dec83d004aa17`, terminó correctamente:
+
+| Medición del contenedor de la API | Resultado |
+|---|---|
+| Suite dentro de Docker | 46 pruebas correctas |
+| Límite de memoria | 512.000.000 bytes |
+| Swap permitido | 0 bytes |
+| Pico de memoria | 422.936.576 bytes (422,9 MB) |
+| Margen respecto al límite | 89.063.424 bytes (89,1 MB) |
+| Eventos OOM / procesos terminados por OOM | 0 / 0 |
+| Cuatro búsquedas simultáneas | 4 respuestas HTTP 200 |
+
+Se compilaron los pesos Q8 dentro del build de Docker. La API ejecutó CLIP real
+y PostgreSQL 17 con el catálogo de prueba inicialmente vacío, una imagen cargada
+y eliminada al final. El cliente HTTP y PostgreSQL quedaron fuera del límite de
+la API; el simulador Drive sí estuvo dentro de su proceso. Los datos se conservan
+en `ci-cloud-smoke.json`, `ci-cloud-memory.json` y `ci-cloud-evidence.json`.
+
+Esta prueba demuestra que ese recorrido cabe en 512 MB. No mide todavía la
+latencia, TLS, cuota o autorización del Drive real, ni la capacidad con un catálogo
+grande o el rendimiento de la CPU de Render Free. Tampoco es una comparación
+directa con el catálogo de 45 imágenes del informe anterior.
+
+El backend local actualizado se inició y respondió `healthy`, con 45 imágenes y
+45 vectores. La búsqueda de `African elephant` devolvió el archivo esperado y su
+miniatura respondió HTTP 200. Se conservaron PostgreSQL y RustFS locales.
+
 ## Lo que requiere los valores privados del propietario
 
 1. Autorizar una vez la cuenta Google con `scripts/authorize_google_drive.py`.

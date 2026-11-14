@@ -1,0 +1,14 @@
+{
+  "workflow_url": "https://github.com/Edithson1/VisionText-backend/actions/runs/43551289437",
+  "run_id": 43551289437,
+  "job_id": 132314083220,
+  "commit": "195b61bc4656c32633d49bcda14dec83d004aa17",
+  "source": "GitHub Actions job logs via GitHub connector",
+  "drive_is_emulated": true,
+  "postgresql_is_isolated_test_service": true,
+  "local_catalog_preserved": {
+    "images": 45,
+    "vectors": 45,
+    "health": "healthy"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "provider": "google_drive",
+  "drive_is_emulated": true,
+  "checks": {
+    "health": 200,
+    "login": 200,
+    "upload": 200,
+    "text_search": 200,
+    "image_search": 200,
+    "download_image": 200,
+    "download_thumbnail": 200,
+    "storage": 200,
+    "reject_description": 422,
+    "four_megapixels": 200,
+    "delete": 200,
+    "health_after": 200
+  },
+  "concurrent_image_statuses": [
+    200,
+    200,
+    200,
+    200
+  ],
+  "passed": true
+}

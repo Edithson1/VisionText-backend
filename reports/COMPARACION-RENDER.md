@@ -97,6 +97,8 @@ con el modelo aislado. Los resultados de esos experimentos se conservaron aparte
   estaba iniciado, por lo que no se compiló ni ejecutó la imagen Docker completa.
   La generación de pesos se verificó por separado en un entorno Linux limpio;
   ambos SHA-256 coinciden con Windows (`model-build-linux.json`).
+  Posteriormente se compiló y probó la imagen Docker completa con Drive simulado;
+  esa validación está en [INTEGRACION-DRIVE.md](INTEGRACION-DRIVE.md).
 - Render Free requiere base de datos y almacenamiento persistente externos;
   la gratuidad de esos servicios se evalúa aparte. Su pausa por inactividad puede
   provocar una espera y un reintento desde la web o Android.
