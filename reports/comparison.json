@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "catalog_images": 45,
+  "rss_reduction_percent": 80.58031850805008,
+  "cgroup_peak_mb": 469.139456,
+  "memory_limit_mb": 512,
+  "margin_mb": 42.860544000000004,
+  "mean_embedding_cosine": {
+    "images": 0.9998950362205505,
+    "texts": 0.9999375343322754
+  },
+  "same_class_query_top1": 45,
+  "same_natural_query_top1": 10,
+  "source_sha256": {
+    "app/services/clip.py": "2d3d4f573dfd6ab70b57710978819cd9c15d09c0f5f238c7a81fa7a3df3ea124",
+    "app/services/clip_torch.py": "d8260fc03482358775f2162443ed272d2d9a335d6ae460a509928802b22cadd0",
+    "app/services/memory.py": "f78ba00868058458d26606147d97037aeb9f1d51befbf46f8ccc748d75fff322",
+    "scripts/build_q8.py": "aa73f4cf66d60105b96882c07b9ab5b664684702c71754cbcbe7cd5f6c9d2796",
+    "Dockerfile": "941dad6cd4c58cfac368d76a9d7dfa71e119f399ca7ff5c9453b272b5f89b28a",
+    "requirements.txt": "d02a966d3856f8091640938ae03a274af0a2719bd4902c623c14fa8bdc04100e"
+  }
+}

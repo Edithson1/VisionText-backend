@@ -2,10 +2,9 @@
 fastapi==0.115.5
 uvicorn[standard]==0.32.1
 
-# CLIP y ML
-open-clip-torch==2.29.0
-torch==2.5.1
-torchvision==0.20.1
+# Inferencia CLIP CPU Q8 (sin PyTorch en producción)
+onnxruntime==1.23.2
+tokenizers==0.22.1
 
 # Búsqueda vectorial
 faiss-cpu==1.9.0
@@ -21,6 +20,8 @@ alembic==1.14.0
 # MinIO / S3
 minio==7.2.10
 boto3==1.35.73
+google-auth==2.62.2
+requests==2.34.2
 
 # Validación y serialización
 pydantic==2.10.3

@@ -1,0 +1,136 @@
+{
+  "backend": "onnx",
+  "memory_limit_bytes": 512000000,
+  "cpu_quota": "10%",
+  "checks": {
+    "health": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 365379584,
+      "memory_current_bytes": 358359040
+    },
+    "unauthorized_upload": {
+      "status": 401,
+      "passed": true,
+      "memory_peak_bytes": 365379584,
+      "memory_current_bytes": 358359040
+    },
+    "login": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 365379584,
+      "memory_current_bytes": 359124992
+    },
+    "text_0": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 465133568,
+      "memory_current_bytes": 360603648
+    },
+    "image_0": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 465133568,
+      "memory_current_bytes": 362057728
+    },
+    "text_1": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 467525632,
+      "memory_current_bytes": 362360832
+    },
+    "image_1": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 467525632,
+      "memory_current_bytes": 362414080
+    },
+    "original": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 467525632,
+      "memory_current_bytes": 362938368
+    },
+    "thumbnail": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 467525632,
+      "memory_current_bytes": 362938368
+    },
+    "upload": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 468131840,
+      "memory_current_bytes": 363360256
+    },
+    "mismatched_description": {
+      "status": 422,
+      "passed": true,
+      "memory_peak_bytes": 468348928,
+      "memory_current_bytes": 362934272
+    },
+    "banned_filename": {
+      "status": 422,
+      "passed": true,
+      "memory_peak_bytes": 468348928,
+      "memory_current_bytes": 362934272
+    },
+    "invalid_image": {
+      "status": 400,
+      "passed": true,
+      "memory_peak_bytes": 468348928,
+      "memory_current_bytes": 365006848
+    },
+    "cors": {
+      "passed": true
+    },
+    "delete": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 468348928,
+      "memory_current_bytes": 365359104
+    },
+    "health_after": {
+      "status": 200,
+      "passed": true,
+      "memory_peak_bytes": 468348928,
+      "memory_current_bytes": 365359104
+    }
+  },
+  "startup_seconds": 61.92267986299976,
+  "health_before": {
+    "status": "healthy",
+    "images_in_db": 45,
+    "vectors_in_index": 45,
+    "model": "ViT-B-32 (openai)",
+    "inference_backend": "onnx",
+    "similarity_threshold": 0.2,
+    "services": {
+      "postgresql": "connected",
+      "minio": "connected",
+      "clip": "loaded",
+      "faiss": "ready"
+    }
+  },
+  "text_median_ms": 7497.702217000551,
+  "image_median_ms": 11700.364535000517,
+  "health_after": {
+    "status": "healthy",
+    "images_in_db": 45,
+    "vectors_in_index": 45,
+    "model": "ViT-B-32 (openai)",
+    "inference_backend": "onnx",
+    "similarity_threshold": 0.2,
+    "services": {
+      "postgresql": "connected",
+      "minio": "connected",
+      "clip": "loaded",
+      "faiss": "ready"
+    }
+  },
+  "passed": true,
+  "peak_process_tree_rss_mib": 450.0703125,
+  "memory.peak": "468348928",
+  "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+  "cpu.stat": "usage_usec 15262914\nuser_usec 8371959\nsystem_usec 6890955\nnice_usec 0\nnr_periods 1527\nnr_throttled 1525\nthrottled_usec 131481773\nnr_bursts 0\nburst_usec 0"
+}

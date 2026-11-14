@@ -2,7 +2,7 @@ import os
 import sys
 
 # Configuración mínima para importar la app sin servicios reales.
-# Ningún test abre conexiones: el engine de SQLAlchemy y el cliente de MinIO son perezosos.
+# PostgreSQL y S3 se sustituyen en los tests; Drive usa un servidor HTTP local.
 os.environ.setdefault("POSTGRES_URL", "postgresql+asyncpg://test:test@localhost:5432/test")
 os.environ.setdefault("MINIO_ACCESS_KEY", "test")
 os.environ.setdefault("MINIO_SECRET_KEY", "test-secret")

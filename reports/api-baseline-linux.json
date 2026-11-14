@@ -1,0 +1,125 @@
+{
+  "backend": "baseline",
+  "memory_limit_mib": null,
+  "cpu_quota": "",
+  "checks": {
+    "health": {
+      "status": 200,
+      "passed": true
+    },
+    "unauthorized_upload": {
+      "status": 401,
+      "passed": true
+    },
+    "login": {
+      "status": 200,
+      "passed": true
+    },
+    "text_0": {
+      "status": 200,
+      "passed": true
+    },
+    "image_0": {
+      "status": 200,
+      "passed": true
+    },
+    "text_1": {
+      "status": 200,
+      "passed": true
+    },
+    "image_1": {
+      "status": 200,
+      "passed": true
+    },
+    "text_2": {
+      "status": 200,
+      "passed": true
+    },
+    "image_2": {
+      "status": 200,
+      "passed": true
+    },
+    "text_3": {
+      "status": 200,
+      "passed": true
+    },
+    "image_3": {
+      "status": 200,
+      "passed": true
+    },
+    "text_4": {
+      "status": 200,
+      "passed": true
+    },
+    "image_4": {
+      "status": 200,
+      "passed": true
+    },
+    "original": {
+      "status": 200,
+      "passed": true
+    },
+    "thumbnail": {
+      "status": 200,
+      "passed": true
+    },
+    "upload": {
+      "status": 200,
+      "passed": true
+    },
+    "mismatched_description": {
+      "status": 422,
+      "passed": true
+    },
+    "banned_filename": {
+      "status": 422,
+      "passed": true
+    },
+    "invalid_image": {
+      "status": 400,
+      "passed": true
+    },
+    "cors": {
+      "passed": true
+    },
+    "delete": {
+      "status": 200,
+      "passed": true
+    },
+    "health_after": {
+      "status": 200,
+      "passed": true
+    }
+  },
+  "startup_seconds": 138.64656342199987,
+  "health_before": {
+    "status": "healthy",
+    "images_in_db": 45,
+    "vectors_in_index": 45,
+    "model": "ViT-B-32 (openai)",
+    "similarity_threshold": 0.2,
+    "services": {
+      "postgresql": "connected",
+      "minio": "connected",
+      "clip": "loaded",
+      "faiss": "ready"
+    }
+  },
+  "text_median_ms": 159.06919499980177,
+  "image_median_ms": 284.1217335001147,
+  "health_after": {
+    "status": "healthy",
+    "images_in_db": 45,
+    "vectors_in_index": 45,
+    "model": "ViT-B-32 (openai)",
+    "similarity_threshold": 0.2,
+    "services": {
+      "postgresql": "connected",
+      "minio": "connected",
+      "clip": "loaded",
+      "faiss": "ready"
+    }
+  },
+  "passed": true,
+  "peak_process_tree_rss_mib": 2324.55859375
+}

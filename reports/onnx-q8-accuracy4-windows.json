@@ -1,0 +1,781 @@
+{
+  "backend": "onnx",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.12",
+  "precision": "q8f16",
+  "torch_imported": false,
+  "open_clip_imported": false,
+  "threads": 1,
+  "samples": 45,
+  "startup_seconds": 3.237606800001231,
+  "peak_rss_mib": 417.953125,
+  "peak_private_mib": 426.6015625,
+  "startup_peak_rss_mib": 298.9765625,
+  "final_rss_mib": 324.4453125,
+  "image_median_ms": 498.8280500001565,
+  "text_median_ms": 388.17329999983485,
+  "text_retrieval_top1": 1,
+  "text_retrieval_top5": 5,
+  "image_self_top1": 1,
+  "matched_uploads_accepted_at_020": 0,
+  "mismatched_uploads_accepted_at_020": 0,
+  "retrieval": [
+    {
+      "query": "african elephant",
+      "expected": "african_elephant_african_elephant-0005.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "alpaca",
+      "expected": "alpaca_alpaca-0011.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "american bison",
+      "expected": "american_bison_american_bison-0003.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "anteater",
+      "expected": "anteater_anteater-0026.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "arctic fox",
+      "expected": "arctic_fox_arctic_fox-0006.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "armadillo",
+      "expected": "armadillo_armadillo-0006.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "baboon",
+      "expected": "baboon_baboon-0001.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "badger",
+      "expected": "badger_badger-0017.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "blue whale",
+      "expected": "blue_whale_blue_whale-0005.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "brown bear",
+      "expected": "brown_bear_brown_bear-0019.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "camel",
+      "expected": "camel_camel-0007.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "dolphin",
+      "expected": "dolphin_dolphin-0003.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "giraffe",
+      "expected": "giraffe_giraffe-0004.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "groundhog",
+      "expected": "groundhog_groundhog-0005.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "highland cattle",
+      "expected": "highland_cattle_highland_cattle-0002.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "horse",
+      "expected": "horse_horse-0014.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "jackal",
+      "expected": "jackal_jackal-0001.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "kangaroo",
+      "expected": "kangaroo_kangaroo-0005.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "koala",
+      "expected": "koala_koala-0007.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "manatee",
+      "expected": "manatee_manatee-0007.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "mongoose",
+      "expected": "mongoose_mongoose-0007.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "mountain goat",
+      "expected": "mountain_goat_mountain_goat-0002.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "opossum",
+      "expected": "opossum_opossum-0006.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "orangutan",
+      "expected": "orangutan_orangutan-0004.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "otter",
+      "expected": "otter_otter-0017.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "polar bear",
+      "expected": "polar_bear_polar_bear-0004.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "porcupine",
+      "expected": "porcupine_porcupine-0005.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "red panda",
+      "expected": "red_panda_red_panda-0001.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "rhinoceros",
+      "expected": "rhinoceros_rhinoceros-0002.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "sea lion",
+      "expected": "sea_lion_sea_lion-0013.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "seal",
+      "expected": "seal_seal-0008.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "snow leopard",
+      "expected": "snow_leopard_snow_leopard-0044.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "squirrel",
+      "expected": "squirrel_squirrel-0005.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "sugar glider",
+      "expected": "sugar_glider_sugar_glider-0010.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "tapir",
+      "expected": "tapir_tapir-0011.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "vampire bat",
+      "expected": "vampire_bat_vampire_bat-0021.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "vicuna",
+      "expected": "vicuna_vicuna-0004.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "walrus",
+      "expected": "walrus_walrus-0008.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "warthog",
+      "expected": "warthog_warthog-0002.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "water buffalo",
+      "expected": "water_buffalo_water_buffalo-0012.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "weasel",
+      "expected": "weasel_weasel-0006.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "wildebeest",
+      "expected": "wildebeest_wildebeest-0016.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "wombat",
+      "expected": "wombat_wombat-0005.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "yak",
+      "expected": "yak_yak-0010.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    },
+    {
+      "query": "zebra",
+      "expected": "zebra_zebra-0007.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": NaN,
+      "mismatched_score": NaN
+    }
+  ],
+  "natural_queries": [
+    {
+      "query": "elephant",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "a large animal with a trunk",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "a fox in snow",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "a striped animal",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "a bird with colorful feathers",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "a bear",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "elefante",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "un animal con trompa",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "zorro",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "query": "un pajaro de colores",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "otter_otter-0017.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ]
+    }
+  ]
+}

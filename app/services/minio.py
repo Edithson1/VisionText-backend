@@ -6,11 +6,12 @@ from app.config import settings
 
 
 class MinIOService:
+    provider = "s3"
     def __init__(self):
         self.client = Minio(
             settings.minio_endpoint,
             access_key=settings.minio_access_key,
-            secret_key=settings.minio_secret_key,
+            secret_key=settings.minio_secret_key.get_secret_value(),
             secure=settings.minio_secure
         )
         self.bucket_images = settings.minio_bucket_images
@@ -126,6 +127,14 @@ class MinIOService:
         except S3Error as e:
             print(f"Error generating presigned URL: {e}")
             return None
+
+    def status(self):
+        return {
+            "status": "connected", "provider": self.provider,
+            "buckets": [bucket.name for bucket in self.client.list_buckets()],
+            "images_bucket_count": sum(1 for _ in self.client.list_objects(self.bucket_images, recursive=True)),
+            "thumbnails_bucket_count": sum(1 for _ in self.client.list_objects(self.bucket_thumbnails, recursive=True)),
+        }
 
 
 # Instancia singleton

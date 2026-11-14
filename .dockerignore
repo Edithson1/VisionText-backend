@@ -6,13 +6,21 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.venv/
+.ci-env/
 
 # Secretos: las variables se inyectan en tiempo de ejecución
 .env
 .env.*
+client_secret*.json
+credentials*.json
+token*.json
 
 # Datos pesados o generados en tiempo de ejecución (van en volúmenes)
 faiss_indices/
+model_cache/
 
 # El dataset se carga vía API con load_dataset.py, no forma parte de la imagen
 dataset_final/
+reports/
+tests/

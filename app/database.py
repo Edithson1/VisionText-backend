@@ -35,17 +35,19 @@ class ImageDB(Base):
     # Embedding CLIP (float32) para reconstruir FAISS sin volver a procesar las imágenes.
     # deferred: solo se lee cuando se pide explícitamente
     embedding = deferred(Column(LargeBinary, nullable=True))
+    embedding_model = deferred(Column(String, nullable=True))
+    storage_provider = Column(String, nullable=False, default="s3", server_default="s3")
 
 
 # Database Service
 class DatabaseService:
     def __init__(self):
         self.engine = create_async_engine(
-            settings.postgres_url,
+            settings.database_url,
             echo=False,
             pool_pre_ping=True,
-            pool_size=10,
-            max_overflow=20
+            pool_size=2,
+            max_overflow=0
         )
         self.async_session = async_sessionmaker(
             self.engine,
@@ -60,6 +62,19 @@ class DatabaseService:
             # create_all no modifica tablas existentes: agrega la columna si la tabla es anterior
             from sqlalchemy import text
             await conn.execute(text("ALTER TABLE images ADD COLUMN IF NOT EXISTS embedding BYTEA"))
+            await conn.execute(text("ALTER TABLE images ADD COLUMN IF NOT EXISTS embedding_model VARCHAR"))
+            await conn.execute(text("ALTER TABLE images ADD COLUMN IF NOT EXISTS storage_provider VARCHAR NOT NULL DEFAULT 's3'"))
+            if (settings.database_url.host or "").endswith((".supabase.com", ".supabase.co")):
+                # Browser access goes through FastAPI's authorization, never the Data API.
+                await conn.execute(text("ALTER TABLE images ENABLE ROW LEVEL SECURITY"))
+                await conn.execute(text("REVOKE ALL ON TABLE images FROM anon, authenticated"))
+
+    async def ensure_storage_provider(self):
+        from sqlalchemy import select
+        async with self.async_session() as session:
+            result = await session.execute(select(ImageDB.storage_provider).distinct())
+            if any(value != settings.storage_backend for value in result.scalars()):
+                raise RuntimeError("El catálogo contiene archivos de otro almacenamiento. Usa una base separada o migra sus archivos antes de cambiar STORAGE_BACKEND.")
     
     async def ping(self) -> bool:
         """Verificar que la base de datos responde"""
@@ -77,7 +92,7 @@ class DatabaseService:
         async with self.async_session() as session:
             yield session
     
-    async def insert_image(self, image_record: ImageRecord, embedding: Optional[np.ndarray] = None) -> bool:
+    async def insert_image(self, image_record: ImageRecord, embedding: Optional[np.ndarray] = None, embedding_model: Optional[str] = None) -> bool:
         """Insertar nuevo registro de imagen (con su embedding CLIP, si se proporciona)"""
         try:
             async with self.async_session() as session:
@@ -94,7 +109,9 @@ class DatabaseService:
                     status=image_record.status.value if isinstance(image_record.status, UploadStatus) else image_record.status,
                     similarity_score=image_record.similarity_score,
                     created_at=image_record.created_at,
-                    embedding=embedding.astype('float32').tobytes() if embedding is not None else None
+                    embedding=embedding.astype('float32').tobytes() if embedding is not None else None,
+                    embedding_model=embedding_model,
+                    storage_provider=settings.storage_backend,
                 )
                 session.add(db_image)
                 await session.commit()
@@ -114,6 +131,33 @@ class DatabaseService:
             )
             return [(row.id, row.image_path, row.embedding) for row in result]
     
+    async def iter_embedding_batches(self, batch_size: int):
+        """Keyset pagination: release each DB result before loading the next batch."""
+        from sqlalchemy import select
+        cursor = ""
+        while True:
+            async with self.async_session() as session:
+                result = await session.execute(
+                    select(ImageDB.id, ImageDB.image_path, ImageDB.embedding, ImageDB.embedding_model)
+                    .where(ImageDB.status == "completed", ImageDB.id > cursor)
+                    .order_by(ImageDB.id).limit(batch_size)
+                )
+                rows = list(result)
+            if not rows:
+                break
+            yield rows
+            cursor = rows[-1].id
+
+    async def update_embeddings(self, updates):
+        from sqlalchemy import update
+        async with self.async_session() as session:
+            for image_id, embedding, model in updates:
+                await session.execute(
+                    update(ImageDB).where(ImageDB.id == image_id)
+                    .values(embedding=embedding.astype("float32").tobytes(), embedding_model=model)
+                )
+            await session.commit()
+
     async def get_all_filenames(self) -> Set[str]:
         """Nombres de archivo ya cargados"""
         async with self.async_session() as session:

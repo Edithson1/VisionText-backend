@@ -8,6 +8,7 @@ __pycache__/
 # Entornos virtuales
 .env
 .venv
+.ci-env/
 venv/
 env/
 
@@ -30,7 +31,15 @@ temp/
 
 # Archivos de entorno
 .env.local
+.env.*
+!.env.example
+!.env.render.example
+client_secret*.json
+credentials*.json
+token*.json
 
 # Modelos y datos pesados
 faiss_indices/
 model_cache/
+reports/*.npz
+reports/*.log

@@ -26,7 +26,7 @@ from app.config import settings
 from app.database import db_service
 from app.services.clip import clip_service
 from app.services.image import image_processing_service
-from app.services.minio import minio_service
+from app.services.storage import storage_service
 from app.services.validation import content_validator
 
 DATASET_DIR = os.getenv(
@@ -53,14 +53,14 @@ async def load_image(image_file: Path) -> str:
         image_processing_service.process_image(content, image_file.name)
     embedding = clip_service.encode_image(pil_image)
 
-    if not minio_service.upload_image(image_record.id, original_bytes) or \
-       not minio_service.upload_thumbnail(image_record.id, thumbnail_bytes):
+    if not storage_service.upload_image(image_record.id, original_bytes) or \
+       not storage_service.upload_thumbnail(image_record.id, thumbnail_bytes):
         raise RuntimeError("no se pudo subir a MinIO")
 
-    if not await db_service.insert_image(image_record, embedding):
+    if not await db_service.insert_image(image_record, embedding, clip_service.embedding_model):
         # No dejar archivos huérfanos en MinIO
-        minio_service.delete_image(image_record.image_path)
-        minio_service.delete_thumbnail(image_record.thumbnail_path)
+        storage_service.delete_image(image_record.image_path)
+        storage_service.delete_thumbnail(image_record.thumbnail_path)
         raise RuntimeError("no se pudo guardar en PostgreSQL")
 
     return None
@@ -80,7 +80,7 @@ async def main():
         sys.exit(1)
 
     await db_service.init_db()
-    minio_service.init_buckets()
+    storage_service.init_buckets()
     clip_service.load_model()
 
     existing = await db_service.get_all_filenames()

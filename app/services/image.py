@@ -31,6 +31,7 @@ class ImageProcessingService:
         # Abrir imagen
         image = Image.open(io.BytesIO(file_content))
         image = image.convert('RGB')  # Asegurar formato RGB
+        image.thumbnail((settings.max_image_dimension, settings.max_image_dimension), Image.Resampling.LANCZOS)
         
         # Obtener metadatos
         width, height = image.size
@@ -81,6 +82,14 @@ class ImageProcessingService:
             image = Image.open(io.BytesIO(file_content))
             # Formatos soportados
             return image.format in ['JPEG', 'JPG', 'PNG', 'GIF', 'BMP', 'WEBP']
+        except Exception:
+            return False
+
+
+    def validate_image_dimensions(self, file_content: bytes) -> bool:
+        try:
+            with Image.open(io.BytesIO(file_content)) as image:
+                return image.width * image.height <= settings.max_image_pixels
         except Exception:
             return False
 

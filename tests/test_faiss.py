@@ -65,3 +65,23 @@ def test_load_accepts_consistent_index(tmp_path, monkeypatch):
 
     assert reloaded.load_index() is True
     assert reloaded.image_ids == ["a", "b"]
+
+
+def test_same_dimension_other_model_is_rejected(tmp_path, monkeypatch):
+    monkeypatch.setattr(settings, "faiss_index_path", str(tmp_path / "faiss.bin"))
+    service = make_service(["a", "b"])
+    service.embedding_model = "previous-model"
+    asyncio.run(service.save_index())
+    reloaded = FAISSService()
+    assert reloaded.load_index(expected_model="onnx-q4", expected_dimension=2) is False
+    assert reloaded.index is None
+
+
+def test_matching_model_and_dimension_survive_restart(tmp_path, monkeypatch):
+    monkeypatch.setattr(settings, "faiss_index_path", str(tmp_path / "faiss.bin"))
+    service = make_service(["a", "b"])
+    service.embedding_model = "onnx-q4"
+    asyncio.run(service.save_index())
+    reloaded = FAISSService()
+    assert reloaded.load_index(expected_model="onnx-q4", expected_dimension=2)
+    assert reloaded.embedding_model == "onnx-q4"

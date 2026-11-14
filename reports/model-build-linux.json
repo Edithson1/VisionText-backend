@@ -1,0 +1,10 @@
+{
+  "text_model_q8f16.onnx": {
+    "sha256": "cc1f0725c003788f0c9cee02ae82d11f8d8092b4a580e0c6f3b15849d5b6ac17",
+    "matches_windows_build": true
+  },
+  "vision_model_q8f16.onnx": {
+    "sha256": "43472d33947afc069c6ffa26bc0996d0f5de9a9444117a034fd090903c163681",
+    "matches_windows_build": true
+  }
+}

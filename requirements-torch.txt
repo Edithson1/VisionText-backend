@@ -1,0 +1,5 @@
+# Solo para comparar o volver al motor anterior. No instalar en Render Free.
+-r requirements.txt
+open-clip-torch==2.29.0
+torch==2.5.1
+torchvision==0.20.1

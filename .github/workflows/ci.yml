@@ -1,9 +1,20 @@
 name: CI
 
-# No corre en push ni en PR: los push solo suben código.
-# Lo ejecuta deploy.yml al publicar un tag, para que nunca se despliegue un commit
-# que no pase estas verificaciones. También se puede lanzar a mano desde Actions.
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - 'tests/**'
+      - 'scripts/**'
+      - '*.py'
+      - 'requirements*.txt'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - '.github/workflows/**'
+      - 'render.yaml'
+      - 'compose.yaml'
+  pull_request:
   workflow_call:
   workflow_dispatch:
 
@@ -14,10 +25,23 @@ jobs:
   test:
     name: Build y tests
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: ci_user
+          POSTGRES_PASSWORD: ci-database-password
+          POSTGRES_DB: visiontext_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci_user -d visiontext_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
     steps:
       - uses: actions/checkout@v5
 
-      # Se construye la misma imagen que construirá Railway: si falla aquí, fallaría allí
+      # The same multi-stage image used by Render, with no private build secrets.
       - name: Construir imagen Docker
         run: docker build -t visiontext-backend:ci .
 
@@ -25,3 +49,41 @@ jobs:
         run: |
           docker run --rm -v "$PWD:/app" -w /app visiontext-backend:ci \
             sh -c "pip install -q -r requirements-dev.txt && python -m pytest -q"
+
+      - name: Probar API real con Drive simulado y límite de 512 MB
+        run: |
+          docker run -d --name visiontext-cloud-test --network host \
+            --memory=512000000 --memory-swap=512000000 \
+            -v "$PWD:/app" -w /app \
+            -e POSTGRES_URL=postgresql+asyncpg://ci_user:ci-database-password@127.0.0.1:5432/visiontext_test \
+            -e STORAGE_BACKEND=google_drive \
+            -e GOOGLE_DRIVE_CLIENT_ID=fake-client \
+            -e GOOGLE_DRIVE_CLIENT_SECRET=fake-client-secret \
+            -e GOOGLE_DRIVE_REFRESH_TOKEN=fake-refresh-token \
+            -e ADMIN_USERNAME=ci-admin -e ADMIN_PASSWORD=ci-test-password \
+            -e JWT_SECRET_KEY=ci-only-jwt-secret \
+            -e BASE_URL=http://127.0.0.1:8008 -e CORS_ORIGINS=http://localhost:5173 \
+            -e FAISS_INDEX_PATH=/tmp/drive-smoke/faiss.bin \
+            visiontext-backend:ci \
+            python -m uvicorn drive_smoke_app:app --app-dir /app/tests --host 127.0.0.1 --port 8008 --workers 1
+          python3 -m venv .ci-env
+          .ci-env/bin/pip install -q httpx==0.27.2 Pillow==11.0.0
+          .ci-env/bin/python scripts/smoke_cloud.py --output reports/ci-cloud-smoke.json
+          docker exec visiontext-cloud-test python -c 'from pathlib import Path; import json; root=Path("/sys/fs/cgroup"); print(json.dumps({name:(root/name).read_text().strip() for name in ["memory.max","memory.swap.max","memory.peak","memory.events"] if (root/name).is_file()},indent=2))' > reports/ci-cloud-memory.json
+          cat reports/ci-cloud-memory.json
+
+      - name: Logs de la prueba de integración
+        if: always()
+        run: docker logs visiontext-cloud-test || true
+
+      - name: Guardar resultados de integración
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloud-integration
+          path: reports/ci-cloud-*.json
+          if-no-files-found: ignore
+
+      - name: Detener el contenedor de pruebas
+        if: always()
+        run: docker rm -f visiontext-cloud-test || true

@@ -6,6 +6,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from contextlib import asynccontextmanager
 import math
 import time
+import asyncio
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -19,7 +20,8 @@ from app.database import db_service
 from app.services.clip import clip_service
 from app.services.faiss import faiss_service
 from app.services.image import image_processing_service
-from app.services.minio import minio_service
+from app.services.storage import storage_service
+from app.services.storage_errors import StorageError
 from app.services.validation import content_validator
 from app.services.auth import verify_admin_credentials, create_access_token, verify_token
 from app.services.rate_limit import LoginRateLimiter
@@ -29,27 +31,30 @@ ip_login_limiter = LoginRateLimiter(settings.login_max_attempts_per_ip, settings
 username_login_limiter = LoginRateLimiter(settings.login_max_attempts_per_username, settings.login_window_seconds)
 
 
-async def load_embeddings_from_db(dimension: int) -> List[Tuple[str, np.ndarray]]:
+async def load_embeddings_from_db(dimension: int):
     """
     Embeddings de todas las imágenes, para reconstruir FAISS.
     Usa los guardados en la BD; solo vuelve a procesar con CLIP las imágenes que no
     tienen uno válido (registros antiguos o embeddings de otro modelo).
     """
-    embeddings_data = []
     reencoded = 0
-    for image_id, image_path, blob in await db_service.get_all_embeddings():
-        if blob is not None and len(blob) == dimension * 4:
-            embeddings_data.append((image_id, np.frombuffer(blob, dtype='float32')))
-            continue
-        try:
-            image_bytes = minio_service.get_image(image_path)
-            if image_bytes:
-                embeddings_data.append((image_id, clip_service.encode_image(image_bytes)))
+    async for batch in db_service.iter_embedding_batches(settings.embedding_batch_size):
+        vectors, updates = [], []
+        for image_id, image_path, blob, model in batch:
+            if blob is not None and len(blob) == dimension * 4 and model == clip_service.embedding_model:
+                vector = np.frombuffer(blob, dtype="float32")
+            else:
+                image_bytes = await run_in_threadpool(storage_service.get_image, image_path)
+                if not image_bytes:
+                    raise RuntimeError(f"No se puede reconstruir el catálogo: falta {image_path}")
+                vector = await run_in_threadpool(clip_service.encode_image, image_bytes)
+                updates.append((image_id, vector, clip_service.embedding_model))
                 reencoded += 1
-        except Exception as e:
-            print(f"Error processing {image_path}: {e}")
-    print(f"Loaded {len(embeddings_data)} embeddings ({reencoded} re-encoded from MinIO)")
-    return embeddings_data
+            vectors.append((image_id, vector))
+        if updates:
+            await db_service.update_embeddings(updates)
+        await faiss_service.add_embeddings(vectors)
+    print(f"Loaded {faiss_service.get_count()} embeddings ({reencoded} re-encoded)")
 
 
 @asynccontextmanager
@@ -59,27 +64,26 @@ async def lifespan(app: FastAPI):
 
     # Inicializar base de datos
     await db_service.init_db()
+    await db_service.ensure_storage_provider()
 
     # Inicializar buckets de MinIO
-    minio_service.init_buckets()
+    await run_in_threadpool(storage_service.init_buckets)
 
     # Cargar modelo CLIP
     clip_service.load_model()
 
     # Cargar índice FAISS; reconstruirlo si no existe o no coincide con la base de datos
     # (p. ej. imágenes cargadas con load_dataset_local.py, que escribe directo en la BD)
-    index_loaded = faiss_service.load_index()
+    dimension = clip_service.get_embedding_dimension()
+    index_loaded = faiss_service.load_index(clip_service.embedding_model, dimension)
     image_count = await db_service.get_image_count()
     if not index_loaded or faiss_service.get_count() != image_count:
         print(
             f"FAISS index needs rebuild ({faiss_service.get_count()} vectors, "
             f"{image_count} images in DB)"
         )
-        dimension = clip_service.get_embedding_dimension()
-        faiss_service.initialize_index(dimension)
-        embeddings_data = await load_embeddings_from_db(dimension)
-        if embeddings_data:
-            await faiss_service.rebuild_index(embeddings_data)
+        faiss_service.initialize_index(dimension, clip_service.embedding_model)
+        await load_embeddings_from_db(dimension)
         await faiss_service.save_index()
     
     print("VisionText Backend ready!")
@@ -97,6 +101,23 @@ app = FastAPI(
     version="2.1.0",
     lifespan=lifespan
 )
+
+
+@app.exception_handler(StorageError)
+async def unavailable_storage(request: Request, error: StorageError):
+    return JSONResponse(status_code=503, content={"detail": "Almacenamiento no disponible. Intenta de nuevo o consulta al administrador."})
+
+# Gate before multipart parsing and image decoding, including the whole upload.
+inference_slots = asyncio.Semaphore(max(1, settings.max_concurrent_inference))
+
+
+@app.middleware("http")
+async def limit_image_work(request: Request, call_next):
+    if request.method == "POST" and request.url.path in {"/api/search/text", "/api/search/image", "/api/upload"}:
+        async with inference_slots:
+            return await call_next(request)
+    return await call_next(request)
+
 
 # Configurar CORS
 app.add_middleware(
@@ -130,7 +151,7 @@ async def read_validated_image(image: UploadFile) -> bytes:
     if not image.content_type or not image.content_type.startswith('image/'):
         raise HTTPException(status_code=400, detail="El archivo debe ser una imagen")
 
-    content = await image.read()
+    content = await image.read(settings.max_upload_size + 1)
 
     if not image_processing_service.validate_image_size(content):
         raise HTTPException(
@@ -140,6 +161,9 @@ async def read_validated_image(image: UploadFile) -> bytes:
 
     if not image_processing_service.validate_image_format(content):
         raise HTTPException(status_code=400, detail="Formato de imagen no soportado")
+
+    if not image_processing_service.validate_image_dimensions(content):
+        raise HTTPException(status_code=413, detail=f"La imagen supera el límite de {settings.max_image_pixels} píxeles")
 
     return content
 
@@ -193,11 +217,11 @@ async def root():
 async def health_check(response: Response):
     """Verificar estado del sistema (503 si alguna dependencia no está disponible)"""
     database_ok = await db_service.ping()
-    minio_ok = await run_in_threadpool(minio_service.ping)
+    storage_ok = await run_in_threadpool(storage_service.ping)
     clip_ok = clip_service.model is not None
     faiss_ok = faiss_service.index is not None
 
-    healthy = database_ok and minio_ok and clip_ok and faiss_ok
+    healthy = database_ok and storage_ok and clip_ok and faiss_ok
     if not healthy:
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
 
@@ -206,10 +230,13 @@ async def health_check(response: Response):
         "images_in_db": await db_service.get_image_count() if database_ok else None,
         "vectors_in_index": faiss_service.get_count(),
         "model": f"{settings.clip_model} ({settings.clip_pretrained})",
+        "inference_backend": settings.clip_backend,
+        "storage_provider": storage_service.provider,
         "similarity_threshold": settings.similarity_threshold,
         "services": {
             "postgresql": "connected" if database_ok else "unavailable",
-            "minio": "connected" if minio_ok else "unavailable",
+            "storage": "connected" if storage_ok else "unavailable",
+            **({"minio": "connected" if storage_ok else "unavailable"} if storage_service.provider == "s3" else {}),
             "clip": "loaded" if clip_ok else "not loaded",
             "faiss": "ready" if faiss_ok else "not ready"
         }
@@ -295,13 +322,17 @@ async def upload_image(
         embedding = await run_in_threadpool(clip_service.encode_image, pil_image)
 
         # Subir a MinIO
-        image_saved = await run_in_threadpool(minio_service.upload_image, image_record.id, original_bytes)
-        thumbnail_saved = await run_in_threadpool(minio_service.upload_thumbnail, image_record.id, thumbnail_bytes)
-        if not image_saved or not thumbnail_saved:
-            raise RuntimeError("MinIO upload failed")
+        image_saved = await run_in_threadpool(storage_service.upload_image, image_record.id, original_bytes)
+        if not image_saved:
+            raise RuntimeError("Image upload failed")
+        image_record.image_path = image_saved
+        thumbnail_saved = await run_in_threadpool(storage_service.upload_thumbnail, image_record.id, thumbnail_bytes)
+        if not thumbnail_saved:
+            raise RuntimeError("Thumbnail upload failed")
+        image_record.thumbnail_path = thumbnail_saved
 
         # Guardar en base de datos
-        if not await db_service.insert_image(image_record, embedding):
+        if not await db_service.insert_image(image_record, embedding, clip_service.embedding_model):
             raise RuntimeError("Database insert failed")
 
         # Agregar al índice FAISS
@@ -327,9 +358,10 @@ async def upload_image(
         print(f"Error uploading image: {e}")
         # No dejar archivos huérfanos en MinIO si falló un paso posterior
         if image_record is not None and await db_service.get_image(image_record.id) is None:
-            await run_in_threadpool(minio_service.delete_image, image_record.image_path)
-            await run_in_threadpool(minio_service.delete_thumbnail, image_record.thumbnail_path)
-        raise HTTPException(status_code=500, detail="Error interno al procesar la imagen")
+            await run_in_threadpool(storage_service.delete_image, image_record.image_path)
+            await run_in_threadpool(storage_service.delete_thumbnail, image_record.thumbnail_path)
+        raise HTTPException(status_code=503 if isinstance(e, StorageError) else 500,
+                            detail="Almacenamiento no disponible" if isinstance(e, StorageError) else "Error interno al procesar la imagen")
 
 
 @app.post("/api/search/text", response_model=SearchResponse)
@@ -413,7 +445,7 @@ async def get_image(image_id: str):
     if not image_record:
         raise HTTPException(status_code=404, detail="Imagen no encontrada")
 
-    image_bytes = await run_in_threadpool(minio_service.get_image, image_record.image_path)
+    image_bytes = await run_in_threadpool(storage_service.get_image, image_record.image_path)
     if not image_bytes:
         raise HTTPException(status_code=404, detail="Archivo de imagen no encontrado")
 
@@ -427,7 +459,7 @@ async def get_thumbnail(image_id: str):
     if not image_record:
         raise HTTPException(status_code=404, detail="Imagen no encontrada")
 
-    thumbnail_bytes = await run_in_threadpool(minio_service.get_thumbnail, image_record.thumbnail_path)
+    thumbnail_bytes = await run_in_threadpool(storage_service.get_thumbnail, image_record.thumbnail_path)
     if not thumbnail_bytes:
         raise HTTPException(status_code=404, detail="Thumbnail no encontrado")
 
@@ -529,8 +561,11 @@ async def delete_image_admin(
         raise HTTPException(status_code=404, detail="Imagen no encontrada")
 
     try:
-        # 1. Eliminar de PostgreSQL PRIMERO
-        # Esto asegura que get_all_images() no incluya esta imagen al reconstruir FAISS
+        # Keep the record until remote cleanup succeeds, so a failed delete can retry.
+        if not await run_in_threadpool(storage_service.delete_image, image_record.image_path):
+            raise StorageError("No se pudo eliminar el archivo")
+        if not await run_in_threadpool(storage_service.delete_thumbnail, image_record.thumbnail_path):
+            raise StorageError("No se pudo eliminar la miniatura")
         if not await db_service.delete_image(image_id):
             raise RuntimeError("Database delete failed")
 
@@ -538,42 +573,28 @@ async def delete_image_admin(
         await faiss_service.remove_embedding(image_id)
         await faiss_service.save_index()
 
-        # 3. Eliminar de MinIO AL FINAL
-        # Los archivos se eliminan después de actualizar el índice
-        await run_in_threadpool(minio_service.delete_image, image_record.image_path)
-        await run_in_threadpool(minio_service.delete_thumbnail, image_record.thumbnail_path)
-
         return {
             "success": True,
             "message": f"Imagen '{image_record.filename}' eliminada completamente",
-            "deleted_from": ["postgresql", "faiss", "minio"]
+            "deleted_from": ["postgresql", "faiss", "minio" if storage_service.provider == "s3" else "google_drive"]
         }
 
     except Exception as e:
         print(f"Error deleting image {image_id}: {e}")
         raise HTTPException(
-            status_code=500,
+            status_code=503 if isinstance(e, StorageError) else 500,
             detail="Error interno al eliminar la imagen"
         )
 
 
 @app.get("/api/admin/storage")
 async def storage_status_admin(admin: dict = Depends(verify_admin_token)):
-    """Verificar conexión y contenido de MinIO (requiere autenticación de admin)"""
-    def count_objects(bucket: str) -> int:
-        return sum(1 for _ in minio_service.client.list_objects(bucket, recursive=True))
-
+    """Verificar conexión y contenido del almacenamiento activo (solo admin)."""
     try:
-        buckets = await run_in_threadpool(minio_service.client.list_buckets)
-        return {
-            "status": "connected",
-            "buckets": [bucket.name for bucket in buckets],
-            "images_bucket_count": await run_in_threadpool(count_objects, settings.minio_bucket_images),
-            "thumbnails_bucket_count": await run_in_threadpool(count_objects, settings.minio_bucket_thumbnails)
-        }
+        return await run_in_threadpool(storage_service.status)
     except Exception as e:
-        print(f"Error checking MinIO storage: {e}")
-        raise HTTPException(status_code=503, detail="MinIO no disponible")
+        print(f"Storage check failed: {type(e).__name__}")
+        raise HTTPException(status_code=503, detail="Almacenamiento no disponible")
 
 
 if __name__ == "__main__":

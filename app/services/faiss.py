@@ -3,8 +3,11 @@ import numpy as np
 import os
 import pickle
 import asyncio
+import sys
 from typing import List, Tuple
 from app.config import settings
+
+faiss.omp_set_num_threads(max(1, settings.inference_threads))
 
 
 class FAISSService:
@@ -13,10 +16,13 @@ class FAISSService:
         self.image_ids = []
         self.dimension = None
         self.lock = asyncio.Lock()
+        self.embedding_model = None
         
-    def initialize_index(self, dimension: int):
+    def initialize_index(self, dimension: int, embedding_model=None):
         """Inicializar índice FAISS"""
         self.dimension = dimension
+        self.embedding_model = embedding_model
+        self.image_ids = []
         # Usar IndexFlatIP para búsqueda por producto interno (cosine similarity)
         self.index = faiss.IndexFlatIP(dimension)
         print(f"FAISS index initialized with dimension {dimension}")
@@ -34,6 +40,12 @@ class FAISSService:
             self.index.add(embedding)
             self.image_ids.append(image_id)
     
+    async def add_embeddings(self, rows):
+        async with self.lock:
+            if rows:
+                self.index.add(np.stack([vector for _, vector in rows]).astype("float32"))
+                self.image_ids.extend(image_id for image_id, _ in rows)
+
     async def search(
         self, 
         query_embedding: np.ndarray, 
@@ -50,16 +62,20 @@ class FAISSService:
             
             # Buscar los k más cercanos
             k_search = min(k, self.index.ntotal)
-            distances, indices = self.index.search(query_embedding, k_search)
-            
-            # Los embeddings están normalizados, por lo que el producto interno (IndexFlatIP)
-            # es directamente la similitud coseno en rango [-1, 1]
-            # NO convertir a [0, 1] - eso infla artificialmente los scores
-            similarities = distances[0]
+            if sys.platform == "win32" and settings.clip_backend == "torch":
+                # FAISS y PyTorch traen runtimes OpenMP incompatibles en Windows.
+                # Usar los mismos vectores del índice plano y su producto interno exacto.
+                vectors = self.index.reconstruct_n(0, self.index.ntotal)
+                scores = vectors @ query_embedding[0]
+                indices = np.argsort(-scores, kind="stable")[:k_search]
+                similarities = scores[indices]
+            else:
+                distances, positions = self.index.search(query_embedding, k_search)
+                similarities, indices = distances[0], positions[0]
             
             # Filtrar por threshold y retornar resultados
             results = []
-            for sim, idx in zip(similarities, indices[0]):
+            for sim, idx in zip(similarities, indices):
                 # Verificar que el índice sea válido y esté dentro del rango de image_ids
                 # Esto también maneja "vectores huérfanos" (orphaned vectors) donde el índice FAISS
                 # podría tener un vector pero su ID correspondiente ya fue eliminado de image_ids.
@@ -85,12 +101,13 @@ class FAISSService:
             with open(metadata_path, 'wb') as f:
                 pickle.dump({
                     'image_ids': self.image_ids,
-                    'dimension': self.dimension
+                    'dimension': self.dimension,
+                    'embedding_model': self.embedding_model,
                 }, f)
             
             print(f"FAISS index saved with {self.index.ntotal} vectors")
     
-    def load_index(self) -> bool:
+    def load_index(self, expected_model=None, expected_dimension=None) -> bool:
         """Cargar índice FAISS y mapeo de IDs"""
         if not os.path.exists(settings.faiss_index_path):
             return False
@@ -105,6 +122,14 @@ class FAISSService:
                 metadata = pickle.load(f)
                 self.image_ids = metadata['image_ids']
                 self.dimension = metadata['dimension']
+                self.embedding_model = metadata.get('embedding_model')
+
+            if ((expected_model is not None and self.embedding_model != expected_model)
+                    or (expected_dimension is not None and self.index.d != expected_dimension)):
+                self.index = None
+                self.image_ids = []
+                self.dimension = None
+                return False
 
             # Un índice desalineado (p. ej. guardado tras borrados con la versión anterior)
             # devolvería imágenes equivocadas: se descarta para reconstruirlo desde la BD

@@ -1,0 +1,779 @@
+{
+  "backend": "onnx",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.12",
+  "precision": "q4f16",
+  "threads": 1,
+  "samples": 45,
+  "startup_seconds": 3.210010999999213,
+  "peak_rss_mib": 244.9921875,
+  "peak_private_mib": 238.578125,
+  "startup_peak_rss_mib": 227.765625,
+  "final_rss_mib": 226.62890625,
+  "image_median_ms": 391.7370999997729,
+  "text_median_ms": 219.08950000033656,
+  "text_retrieval_top1": 39,
+  "text_retrieval_top5": 45,
+  "image_self_top1": 45,
+  "matched_uploads_accepted_at_020": 45,
+  "mismatched_uploads_accepted_at_020": 12,
+  "retrieval": [
+    {
+      "query": "african elephant",
+      "expected": "african_elephant_african_elephant-0005.jpg",
+      "top5": [
+        "african_elephant_african_elephant-0005.jpg",
+        "rhinoceros_rhinoceros-0002.jpg",
+        "tapir_tapir-0011.jpg",
+        "anteater_anteater-0026.jpg",
+        "manatee_manatee-0007.jpg"
+      ],
+      "matched_score": 0.2772546410560608,
+      "mismatched_score": 0.16021789610385895
+    },
+    {
+      "query": "alpaca",
+      "expected": "alpaca_alpaca-0011.jpg",
+      "top5": [
+        "alpaca_alpaca-0011.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "highland_cattle_highland_cattle-0002.jpg",
+        "giraffe_giraffe-0004.jpg",
+        "jackal_jackal-0001.jpg"
+      ],
+      "matched_score": 0.3046082854270935,
+      "mismatched_score": 0.1682722419500351
+    },
+    {
+      "query": "american bison",
+      "expected": "american_bison_american_bison-0003.jpg",
+      "top5": [
+        "highland_cattle_highland_cattle-0002.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "american_bison_american_bison-0003.jpg",
+        "water_buffalo_water_buffalo-0012.jpg",
+        "warthog_warthog-0002.jpg"
+      ],
+      "matched_score": 0.2794167399406433,
+      "mismatched_score": 0.1792995184659958
+    },
+    {
+      "query": "anteater",
+      "expected": "anteater_anteater-0026.jpg",
+      "top5": [
+        "anteater_anteater-0026.jpg",
+        "badger_badger-0017.jpg",
+        "tapir_tapir-0011.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "mongoose_mongoose-0007.jpg"
+      ],
+      "matched_score": 0.3269370198249817,
+      "mismatched_score": 0.20461323857307434
+    },
+    {
+      "query": "arctic fox",
+      "expected": "arctic_fox_arctic_fox-0006.jpg",
+      "top5": [
+        "arctic_fox_arctic_fox-0006.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "jackal_jackal-0001.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "weasel_weasel-0006.jpg"
+      ],
+      "matched_score": 0.2805331349372864,
+      "mismatched_score": 0.15643903613090515
+    },
+    {
+      "query": "armadillo",
+      "expected": "armadillo_armadillo-0006.jpg",
+      "top5": [
+        "armadillo_armadillo-0006.jpg",
+        "anteater_anteater-0026.jpg",
+        "wombat_wombat-0005.jpg",
+        "manatee_manatee-0007.jpg",
+        "weasel_weasel-0006.jpg"
+      ],
+      "matched_score": 0.3333953022956848,
+      "mismatched_score": 0.14746426045894623
+    },
+    {
+      "query": "baboon",
+      "expected": "baboon_baboon-0001.jpg",
+      "top5": [
+        "baboon_baboon-0001.jpg",
+        "weasel_weasel-0006.jpg",
+        "mongoose_mongoose-0007.jpg",
+        "anteater_anteater-0026.jpg",
+        "wombat_wombat-0005.jpg"
+      ],
+      "matched_score": 0.296090692281723,
+      "mismatched_score": 0.1824892908334732
+    },
+    {
+      "query": "badger",
+      "expected": "badger_badger-0017.jpg",
+      "top5": [
+        "badger_badger-0017.jpg",
+        "wombat_wombat-0005.jpg",
+        "anteater_anteater-0026.jpg",
+        "mongoose_mongoose-0007.jpg",
+        "porcupine_porcupine-0005.jpg"
+      ],
+      "matched_score": 0.335598349571228,
+      "mismatched_score": 0.13550688326358795
+    },
+    {
+      "query": "blue whale",
+      "expected": "blue_whale_blue_whale-0005.jpg",
+      "top5": [
+        "blue_whale_blue_whale-0005.jpg",
+        "manatee_manatee-0007.jpg",
+        "dolphin_dolphin-0003.jpg",
+        "seal_seal-0008.jpg",
+        "walrus_walrus-0008.jpg"
+      ],
+      "matched_score": 0.25737687945365906,
+      "mismatched_score": 0.13619095087051392
+    },
+    {
+      "query": "brown bear",
+      "expected": "brown_bear_brown_bear-0019.jpg",
+      "top5": [
+        "brown_bear_brown_bear-0019.jpg",
+        "highland_cattle_highland_cattle-0002.jpg",
+        "wombat_wombat-0005.jpg",
+        "koala_koala-0007.jpg",
+        "anteater_anteater-0026.jpg"
+      ],
+      "matched_score": 0.28520768880844116,
+      "mismatched_score": 0.17979469895362854
+    },
+    {
+      "query": "camel",
+      "expected": "camel_camel-0007.jpg",
+      "top5": [
+        "camel_camel-0007.jpg",
+        "kangaroo_kangaroo-0005.jpg",
+        "vicuna_vicuna-0004.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "groundhog_groundhog-0005.jpg"
+      ],
+      "matched_score": 0.2599210739135742,
+      "mismatched_score": 0.14545665681362152
+    },
+    {
+      "query": "dolphin",
+      "expected": "dolphin_dolphin-0003.jpg",
+      "top5": [
+        "dolphin_dolphin-0003.jpg",
+        "manatee_manatee-0007.jpg",
+        "seal_seal-0008.jpg",
+        "blue_whale_blue_whale-0005.jpg",
+        "mountain_goat_mountain_goat-0002.jpg"
+      ],
+      "matched_score": 0.27320238947868347,
+      "mismatched_score": 0.1739155799150467
+    },
+    {
+      "query": "giraffe",
+      "expected": "giraffe_giraffe-0004.jpg",
+      "top5": [
+        "giraffe_giraffe-0004.jpg",
+        "zebra_zebra-0007.jpg",
+        "camel_camel-0007.jpg",
+        "kangaroo_kangaroo-0005.jpg",
+        "alpaca_alpaca-0011.jpg"
+      ],
+      "matched_score": 0.28136590123176575,
+      "mismatched_score": 0.13922671973705292
+    },
+    {
+      "query": "groundhog",
+      "expected": "groundhog_groundhog-0005.jpg",
+      "top5": [
+        "groundhog_groundhog-0005.jpg",
+        "wombat_wombat-0005.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "weasel_weasel-0006.jpg",
+        "mongoose_mongoose-0007.jpg"
+      ],
+      "matched_score": 0.29655617475509644,
+      "mismatched_score": 0.15630222856998444
+    },
+    {
+      "query": "highland cattle",
+      "expected": "highland_cattle_highland_cattle-0002.jpg",
+      "top5": [
+        "highland_cattle_highland_cattle-0002.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "american_bison_american_bison-0003.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "horse_horse-0014.jpg"
+      ],
+      "matched_score": 0.3352380394935608,
+      "mismatched_score": 0.24809543788433075
+    },
+    {
+      "query": "horse",
+      "expected": "horse_horse-0014.jpg",
+      "top5": [
+        "horse_horse-0014.jpg",
+        "zebra_zebra-0007.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "highland_cattle_highland_cattle-0002.jpg"
+      ],
+      "matched_score": 0.30078086256980896,
+      "mismatched_score": 0.18724425137043
+    },
+    {
+      "query": "jackal",
+      "expected": "jackal_jackal-0001.jpg",
+      "top5": [
+        "jackal_jackal-0001.jpg",
+        "kangaroo_kangaroo-0005.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "anteater_anteater-0026.jpg",
+        "weasel_weasel-0006.jpg"
+      ],
+      "matched_score": 0.30958718061447144,
+      "mismatched_score": 0.25490808486938477
+    },
+    {
+      "query": "kangaroo",
+      "expected": "kangaroo_kangaroo-0005.jpg",
+      "top5": [
+        "kangaroo_kangaroo-0005.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "anteater_anteater-0026.jpg",
+        "sugar_glider_sugar_glider-0010.jpg",
+        "jackal_jackal-0001.jpg"
+      ],
+      "matched_score": 0.3092030882835388,
+      "mismatched_score": 0.23427286744117737
+    },
+    {
+      "query": "koala",
+      "expected": "koala_koala-0007.jpg",
+      "top5": [
+        "koala_koala-0007.jpg",
+        "sugar_glider_sugar_glider-0010.jpg",
+        "mongoose_mongoose-0007.jpg",
+        "kangaroo_kangaroo-0005.jpg",
+        "wombat_wombat-0005.jpg"
+      ],
+      "matched_score": 0.32551032304763794,
+      "mismatched_score": 0.21243390440940857
+    },
+    {
+      "query": "manatee",
+      "expected": "manatee_manatee-0007.jpg",
+      "top5": [
+        "manatee_manatee-0007.jpg",
+        "seal_seal-0008.jpg",
+        "walrus_walrus-0008.jpg",
+        "sea_lion_sea_lion-0013.jpg",
+        "blue_whale_blue_whale-0005.jpg"
+      ],
+      "matched_score": 0.31160420179367065,
+      "mismatched_score": 0.19435277581214905
+    },
+    {
+      "query": "mongoose",
+      "expected": "mongoose_mongoose-0007.jpg",
+      "top5": [
+        "anteater_anteater-0026.jpg",
+        "mongoose_mongoose-0007.jpg",
+        "weasel_weasel-0006.jpg",
+        "wombat_wombat-0005.jpg",
+        "porcupine_porcupine-0005.jpg"
+      ],
+      "matched_score": 0.3017598092556,
+      "mismatched_score": 0.20249271392822266
+    },
+    {
+      "query": "mountain goat",
+      "expected": "mountain_goat_mountain_goat-0002.jpg",
+      "top5": [
+        "mountain_goat_mountain_goat-0002.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "alpaca_alpaca-0011.jpg",
+        "highland_cattle_highland_cattle-0002.jpg",
+        "arctic_fox_arctic_fox-0006.jpg"
+      ],
+      "matched_score": 0.33584970235824585,
+      "mismatched_score": 0.23664681613445282
+    },
+    {
+      "query": "opossum",
+      "expected": "opossum_opossum-0006.jpg",
+      "top5": [
+        "opossum_opossum-0006.jpg",
+        "sugar_glider_sugar_glider-0010.jpg",
+        "wombat_wombat-0005.jpg",
+        "anteater_anteater-0026.jpg",
+        "weasel_weasel-0006.jpg"
+      ],
+      "matched_score": 0.29470932483673096,
+      "mismatched_score": 0.15678825974464417
+    },
+    {
+      "query": "orangutan",
+      "expected": "orangutan_orangutan-0004.jpg",
+      "top5": [
+        "orangutan_orangutan-0004.jpg",
+        "baboon_baboon-0001.jpg",
+        "mongoose_mongoose-0007.jpg",
+        "red_panda_red_panda-0001.jpg",
+        "highland_cattle_highland_cattle-0002.jpg"
+      ],
+      "matched_score": 0.30778223276138306,
+      "mismatched_score": 0.1521432250738144
+    },
+    {
+      "query": "otter",
+      "expected": "otter_otter-0017.jpg",
+      "top5": [
+        "otter_otter-0017.jpg",
+        "seal_seal-0008.jpg",
+        "weasel_weasel-0006.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "matched_score": 0.29911625385284424,
+      "mismatched_score": 0.17653866112232208
+    },
+    {
+      "query": "polar bear",
+      "expected": "polar_bear_polar_bear-0004.jpg",
+      "top5": [
+        "polar_bear_polar_bear-0004.jpg",
+        "arctic_fox_arctic_fox-0006.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "brown_bear_brown_bear-0019.jpg",
+        "koala_koala-0007.jpg"
+      ],
+      "matched_score": 0.2875109314918518,
+      "mismatched_score": 0.18487966060638428
+    },
+    {
+      "query": "porcupine",
+      "expected": "porcupine_porcupine-0005.jpg",
+      "top5": [
+        "porcupine_porcupine-0005.jpg",
+        "wombat_wombat-0005.jpg",
+        "anteater_anteater-0026.jpg",
+        "otter_otter-0017.jpg",
+        "tapir_tapir-0011.jpg"
+      ],
+      "matched_score": 0.3088003993034363,
+      "mismatched_score": 0.1977091133594513
+    },
+    {
+      "query": "red panda",
+      "expected": "red_panda_red_panda-0001.jpg",
+      "top5": [
+        "red_panda_red_panda-0001.jpg",
+        "mongoose_mongoose-0007.jpg",
+        "badger_badger-0017.jpg",
+        "koala_koala-0007.jpg",
+        "anteater_anteater-0026.jpg"
+      ],
+      "matched_score": 0.325730562210083,
+      "mismatched_score": 0.160850390791893
+    },
+    {
+      "query": "rhinoceros",
+      "expected": "rhinoceros_rhinoceros-0002.jpg",
+      "top5": [
+        "rhinoceros_rhinoceros-0002.jpg",
+        "warthog_warthog-0002.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "water_buffalo_water_buffalo-0012.jpg",
+        "tapir_tapir-0011.jpg"
+      ],
+      "matched_score": 0.3128006160259247,
+      "mismatched_score": 0.17496873438358307
+    },
+    {
+      "query": "sea lion",
+      "expected": "sea_lion_sea_lion-0013.jpg",
+      "top5": [
+        "seal_seal-0008.jpg",
+        "manatee_manatee-0007.jpg",
+        "otter_otter-0017.jpg",
+        "sea_lion_sea_lion-0013.jpg",
+        "groundhog_groundhog-0005.jpg"
+      ],
+      "matched_score": 0.2508918046951294,
+      "mismatched_score": 0.25203096866607666
+    },
+    {
+      "query": "seal",
+      "expected": "seal_seal-0008.jpg",
+      "top5": [
+        "seal_seal-0008.jpg",
+        "manatee_manatee-0007.jpg",
+        "sea_lion_sea_lion-0013.jpg",
+        "otter_otter-0017.jpg",
+        "groundhog_groundhog-0005.jpg"
+      ],
+      "matched_score": 0.27415481209754944,
+      "mismatched_score": 0.17160022258758545
+    },
+    {
+      "query": "snow leopard",
+      "expected": "snow_leopard_snow_leopard-0044.jpg",
+      "top5": [
+        "snow_leopard_snow_leopard-0044.jpg",
+        "tapir_tapir-0011.jpg",
+        "arctic_fox_arctic_fox-0006.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "polar_bear_polar_bear-0004.jpg"
+      ],
+      "matched_score": 0.2848527133464813,
+      "mismatched_score": 0.17686215043067932
+    },
+    {
+      "query": "squirrel",
+      "expected": "squirrel_squirrel-0005.jpg",
+      "top5": [
+        "squirrel_squirrel-0005.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "mongoose_mongoose-0007.jpg",
+        "weasel_weasel-0006.jpg",
+        "sugar_glider_sugar_glider-0010.jpg"
+      ],
+      "matched_score": 0.27657419443130493,
+      "mismatched_score": 0.14886043965816498
+    },
+    {
+      "query": "sugar glider",
+      "expected": "sugar_glider_sugar_glider-0010.jpg",
+      "top5": [
+        "sugar_glider_sugar_glider-0010.jpg",
+        "vampire_bat_vampire_bat-0021.jpg",
+        "weasel_weasel-0006.jpg",
+        "opossum_opossum-0006.jpg",
+        "mongoose_mongoose-0007.jpg"
+      ],
+      "matched_score": 0.32661452889442444,
+      "mismatched_score": 0.1916525810956955
+    },
+    {
+      "query": "tapir",
+      "expected": "tapir_tapir-0011.jpg",
+      "top5": [
+        "tapir_tapir-0011.jpg",
+        "anteater_anteater-0026.jpg",
+        "kangaroo_kangaroo-0005.jpg",
+        "zebra_zebra-0007.jpg",
+        "mongoose_mongoose-0007.jpg"
+      ],
+      "matched_score": 0.2846517562866211,
+      "mismatched_score": 0.19543156027793884
+    },
+    {
+      "query": "vampire bat",
+      "expected": "vampire_bat_vampire_bat-0021.jpg",
+      "top5": [
+        "vampire_bat_vampire_bat-0021.jpg",
+        "sugar_glider_sugar_glider-0010.jpg",
+        "weasel_weasel-0006.jpg",
+        "opossum_opossum-0006.jpg",
+        "mongoose_mongoose-0007.jpg"
+      ],
+      "matched_score": 0.3061436712741852,
+      "mismatched_score": 0.16556474566459656
+    },
+    {
+      "query": "vicuna",
+      "expected": "vicuna_vicuna-0004.jpg",
+      "top5": [
+        "vicuna_vicuna-0004.jpg",
+        "jackal_jackal-0001.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "kangaroo_kangaroo-0005.jpg",
+        "camel_camel-0007.jpg"
+      ],
+      "matched_score": 0.3073815405368805,
+      "mismatched_score": 0.1797304004430771
+    },
+    {
+      "query": "walrus",
+      "expected": "walrus_walrus-0008.jpg",
+      "top5": [
+        "manatee_manatee-0007.jpg",
+        "otter_otter-0017.jpg",
+        "seal_seal-0008.jpg",
+        "walrus_walrus-0008.jpg",
+        "sea_lion_sea_lion-0013.jpg"
+      ],
+      "matched_score": 0.2393655776977539,
+      "mismatched_score": 0.155690997838974
+    },
+    {
+      "query": "warthog",
+      "expected": "warthog_warthog-0002.jpg",
+      "top5": [
+        "warthog_warthog-0002.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "wombat_wombat-0005.jpg",
+        "rhinoceros_rhinoceros-0002.jpg",
+        "american_bison_american_bison-0003.jpg"
+      ],
+      "matched_score": 0.2875492572784424,
+      "mismatched_score": 0.2645871043205261
+    },
+    {
+      "query": "water buffalo",
+      "expected": "water_buffalo_water_buffalo-0012.jpg",
+      "top5": [
+        "rhinoceros_rhinoceros-0002.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "water_buffalo_water_buffalo-0012.jpg",
+        "warthog_warthog-0002.jpg",
+        "manatee_manatee-0007.jpg"
+      ],
+      "matched_score": 0.2746206820011139,
+      "mismatched_score": 0.1322309374809265
+    },
+    {
+      "query": "weasel",
+      "expected": "weasel_weasel-0006.jpg",
+      "top5": [
+        "weasel_weasel-0006.jpg",
+        "mongoose_mongoose-0007.jpg",
+        "sugar_glider_sugar_glider-0010.jpg",
+        "badger_badger-0017.jpg",
+        "groundhog_groundhog-0005.jpg"
+      ],
+      "matched_score": 0.3029628396034241,
+      "mismatched_score": 0.21178275346755981
+    },
+    {
+      "query": "wildebeest",
+      "expected": "wildebeest_wildebeest-0016.jpg",
+      "top5": [
+        "wildebeest_wildebeest-0016.jpg",
+        "rhinoceros_rhinoceros-0002.jpg",
+        "water_buffalo_water_buffalo-0012.jpg",
+        "warthog_warthog-0002.jpg",
+        "zebra_zebra-0007.jpg"
+      ],
+      "matched_score": 0.3296170234680176,
+      "mismatched_score": 0.18950921297073364
+    },
+    {
+      "query": "wombat",
+      "expected": "wombat_wombat-0005.jpg",
+      "top5": [
+        "wombat_wombat-0005.jpg",
+        "anteater_anteater-0026.jpg",
+        "koala_koala-0007.jpg",
+        "porcupine_porcupine-0005.jpg",
+        "groundhog_groundhog-0005.jpg"
+      ],
+      "matched_score": 0.3076508343219757,
+      "mismatched_score": 0.22095653414726257
+    },
+    {
+      "query": "yak",
+      "expected": "yak_yak-0010.jpg",
+      "top5": [
+        "wildebeest_wildebeest-0016.jpg",
+        "highland_cattle_highland_cattle-0002.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "yak_yak-0010.jpg",
+        "american_bison_american_bison-0003.jpg"
+      ],
+      "matched_score": 0.2539297342300415,
+      "mismatched_score": 0.1965358406305313
+    },
+    {
+      "query": "zebra",
+      "expected": "zebra_zebra-0007.jpg",
+      "top5": [
+        "zebra_zebra-0007.jpg",
+        "tapir_tapir-0011.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "giraffe_giraffe-0004.jpg",
+        "snow_leopard_snow_leopard-0044.jpg"
+      ],
+      "matched_score": 0.3311235308647156,
+      "mismatched_score": 0.2256951481103897
+    }
+  ],
+  "natural_queries": [
+    {
+      "query": "elephant",
+      "top5": [
+        "tapir_tapir-0011.jpg",
+        "african_elephant_african_elephant-0005.jpg",
+        "manatee_manatee-0007.jpg",
+        "koala_koala-0007.jpg",
+        "anteater_anteater-0026.jpg"
+      ],
+      "scores": [
+        0.26420095562934875,
+        0.26088985800743103,
+        0.23993682861328125,
+        0.23586279153823853,
+        0.22925958037376404
+      ]
+    },
+    {
+      "query": "a large animal with a trunk",
+      "top5": [
+        "rhinoceros_rhinoceros-0002.jpg",
+        "tapir_tapir-0011.jpg",
+        "african_elephant_african_elephant-0005.jpg",
+        "anteater_anteater-0026.jpg",
+        "manatee_manatee-0007.jpg"
+      ],
+      "scores": [
+        0.26618462800979614,
+        0.2623101472854614,
+        0.2605155408382416,
+        0.2567397356033325,
+        0.2522280216217041
+      ]
+    },
+    {
+      "query": "a fox in snow",
+      "top5": [
+        "mountain_goat_mountain_goat-0002.jpg",
+        "jackal_jackal-0001.jpg",
+        "polar_bear_polar_bear-0004.jpg",
+        "arctic_fox_arctic_fox-0006.jpg",
+        "mongoose_mongoose-0007.jpg"
+      ],
+      "scores": [
+        0.22358830273151398,
+        0.22066068649291992,
+        0.21066772937774658,
+        0.2092423141002655,
+        0.1857675164937973
+      ]
+    },
+    {
+      "query": "a striped animal",
+      "top5": [
+        "zebra_zebra-0007.jpg",
+        "tapir_tapir-0011.jpg",
+        "badger_badger-0017.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "horse_horse-0014.jpg"
+      ],
+      "scores": [
+        0.3135502338409424,
+        0.27845120429992676,
+        0.2554876506328583,
+        0.2524246275424957,
+        0.24823568761348724
+      ]
+    },
+    {
+      "query": "a bird with colorful feathers",
+      "top5": [
+        "weasel_weasel-0006.jpg",
+        "zebra_zebra-0007.jpg",
+        "squirrel_squirrel-0005.jpg",
+        "red_panda_red_panda-0001.jpg",
+        "sugar_glider_sugar_glider-0010.jpg"
+      ],
+      "scores": [
+        0.19216123223304749,
+        0.19209034740924835,
+        0.181483656167984,
+        0.17901957035064697,
+        0.1782548427581787
+      ]
+    },
+    {
+      "query": "a bear",
+      "top5": [
+        "brown_bear_brown_bear-0019.jpg",
+        "tapir_tapir-0011.jpg",
+        "koala_koala-0007.jpg",
+        "wombat_wombat-0005.jpg",
+        "red_panda_red_panda-0001.jpg"
+      ],
+      "scores": [
+        0.25899043679237366,
+        0.2540156841278076,
+        0.2504088580608368,
+        0.24448218941688538,
+        0.23523204028606415
+      ]
+    },
+    {
+      "query": "elefante",
+      "top5": [
+        "tapir_tapir-0011.jpg",
+        "koala_koala-0007.jpg",
+        "anteater_anteater-0026.jpg",
+        "manatee_manatee-0007.jpg",
+        "african_elephant_african_elephant-0005.jpg"
+      ],
+      "scores": [
+        0.27267515659332275,
+        0.24761740863323212,
+        0.24761351943016052,
+        0.24562102556228638,
+        0.24245283007621765
+      ]
+    },
+    {
+      "query": "un animal con trompa",
+      "top5": [
+        "mountain_goat_mountain_goat-0002.jpg",
+        "wombat_wombat-0005.jpg",
+        "anteater_anteater-0026.jpg",
+        "highland_cattle_highland_cattle-0002.jpg",
+        "wildebeest_wildebeest-0016.jpg"
+      ],
+      "scores": [
+        0.25693774223327637,
+        0.2535523772239685,
+        0.2506619095802307,
+        0.24959829449653625,
+        0.2480718493461609
+      ]
+    },
+    {
+      "query": "zorro",
+      "top5": [
+        "vampire_bat_vampire_bat-0021.jpg",
+        "sugar_glider_sugar_glider-0010.jpg",
+        "wildebeest_wildebeest-0016.jpg",
+        "badger_badger-0017.jpg",
+        "mongoose_mongoose-0007.jpg"
+      ],
+      "scores": [
+        0.23434723913669586,
+        0.22561107575893402,
+        0.22303757071495056,
+        0.22207191586494446,
+        0.2200891077518463
+      ]
+    },
+    {
+      "query": "un pajaro de colores",
+      "top5": [
+        "weasel_weasel-0006.jpg",
+        "vampire_bat_vampire_bat-0021.jpg",
+        "mountain_goat_mountain_goat-0002.jpg",
+        "sugar_glider_sugar_glider-0010.jpg",
+        "camel_camel-0007.jpg"
+      ],
+      "scores": [
+        0.22395101189613342,
+        0.2160242795944214,
+        0.2136421650648117,
+        0.21347740292549133,
+        0.21043908596038818
+      ]
+    }
+  ]
+}

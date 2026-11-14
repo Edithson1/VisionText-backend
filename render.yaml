@@ -1,0 +1,59 @@
+services:
+  - type: web
+    name: visiontext-backend
+    repo: https://github.com/Edithson1/VisionText-backend
+    branch: main
+    autoDeployTrigger: checksPass
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: CLIP_BACKEND
+        value: onnx
+      - key: CLIP_MODEL
+        value: ViT-B-32
+      - key: ONNX_PRECISION
+        value: q8f16
+      - key: ONNX_MODEL_DIR
+        value: /opt/clip-onnx
+      - key: INFERENCE_THREADS
+        value: "1"
+      - key: MAX_CONCURRENT_INFERENCE
+        value: "1"
+      - key: POSTGRES_HOST
+        value: aws-0-us-east-2.pooler.supabase.com
+      - key: POSTGRES_PORT
+        value: "5432"
+      - key: POSTGRES_DB
+        value: postgres
+      - key: POSTGRES_USER
+        value: postgres.rallvjbmmlezptdhtfzx
+      - key: POSTGRES_SSL
+        value: require
+      - key: POSTGRES_PASSWORD
+        sync: false
+      - key: STORAGE_BACKEND
+        value: google_drive
+      - key: GOOGLE_DRIVE_CLIENT_ID
+        value: 671243718941-v9qphoe5a4ipkefbj897q5ev543b3uiu.apps.googleusercontent.com
+      - key: GOOGLE_DRIVE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_DRIVE_REFRESH_TOKEN
+        sync: false
+      - key: GOOGLE_DRIVE_FOLDER_ID
+        sync: false
+      - key: GOOGLE_DRIVE_FOLDER_NAME
+        value: VisionText
+      - key: GOOGLE_DRIVE_NAMESPACE
+        value: visiontext-rallvjbmmlezptdhtfzx
+      - key: BASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true

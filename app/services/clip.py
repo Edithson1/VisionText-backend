@@ -1,127 +1,169 @@
-import torch
-import open_clip
-from PIL import Image
-import numpy as np
+"""CLIP inference without importing PyTorch in the production ONNX path."""
+import io
+import json
+from pathlib import Path
+import threading
 from typing import Union, Tuple
-import os
+
+import numpy as np
+from PIL import Image
+
+from app.clip_assets import ONNX_REVISION, Q8_BUILD_ID
 from app.config import settings
+from app.services.memory import release_unused_memory
+
+
+class ONNXCLIP:
+    def __init__(self):
+        self.model = None
+        self.text_model = None
+        self.tokenizer = None
+
+    def load_model(self):
+        import onnxruntime as ort
+        from tokenizers import Tokenizer
+
+        if settings.clip_model != "ViT-B-32" or settings.clip_pretrained != "openai":
+            raise ValueError("ONNX requiere CLIP_MODEL=ViT-B-32 y CLIP_PRETRAINED=openai")
+        directory = Path(settings.onnx_model_dir)
+        manifest_path = directory / "manifest.json"
+        if not manifest_path.is_file():
+            raise RuntimeError("Faltan modelos ONNX. Ejecuta python scripts/prepare_onnx.py")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest.get("revision") != ONNX_REVISION:
+            raise RuntimeError("Revisión ONNX incompatible. Prepara los modelos de nuevo.")
+        if settings.onnx_precision == "q8f16" and manifest.get("conversion") != Q8_BUILD_ID:
+            raise RuntimeError("Prepara el perfil Q8 con python scripts/prepare_onnx.py")
+        options = ort.SessionOptions()
+        options.intra_op_num_threads = max(1, settings.inference_threads)
+        options.inter_op_num_threads = 1
+        options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
+        options.enable_cpu_mem_arena = False
+        options.enable_mem_pattern = False
+        options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_BASIC
+        text_precision = "fp16" if settings.onnx_precision in {"fp16", "mixed"} else "uint8"
+        image_precision = "fp16" if settings.onnx_precision == "fp16" else "uint8"
+        if settings.onnx_precision in {"q4f16", "q8f16"}:
+            text_precision = image_precision = settings.onnx_precision
+        self.text_model = ort.InferenceSession(
+            str(directory / f"onnx/text_model_{text_precision}.onnx"), options,
+            providers=["CPUExecutionProvider"],
+        )
+        self.model = ort.InferenceSession(
+            str(directory / f"onnx/vision_model_{image_precision}.onnx"), options,
+            providers=["CPUExecutionProvider"],
+        )
+        self.tokenizer = Tokenizer.from_file(str(directory / "tokenizer.json"))
+        self.tokenizer.enable_truncation(max_length=77)
+        self.tokenizer.enable_padding(length=77, pad_id=49407, pad_token="<|endoftext|>")
+        self.preprocess = json.loads((directory / "preprocessor_config.json").read_text(encoding="utf-8"))
+        print(f"CLIP ONNX {settings.onnx_precision} ready ({ONNX_REVISION[:8]}, {settings.inference_threads} thread)")
+
+    @staticmethod
+    def normalize(vector):
+        vector = np.asarray(vector, dtype=np.float32).reshape(-1)
+        return vector / max(float(np.linalg.norm(vector)), 1e-12)
+
+    def encode_text(self, text):
+        encoded = self.tokenizer.encode(text)
+        inputs = {"input_ids": np.array([encoded.ids], dtype=np.int64)}
+        if any(item.name == "attention_mask" for item in self.text_model.get_inputs()):
+            inputs["attention_mask"] = np.array([encoded.attention_mask], dtype=np.int64)
+        return self.normalize(self.text_model.run(["text_embeds"], inputs)[0])
+
+    def encode_image(self, image):
+        if isinstance(image, (str, Path)):
+            with Image.open(image) as source:
+                pil_image = source.convert("RGB")
+                source.close()
+        elif isinstance(image, bytes):
+            with Image.open(io.BytesIO(image)) as source:
+                pil_image = source.convert("RGB")
+                source.close()
+        else:
+            pil_image = image if image.mode == "RGB" else image.convert("RGB")
+        config = self.preprocess
+        edge = config["size"]["shortest_edge"]
+        width, height = pil_image.size
+        # Extremely thin images must not create a huge intermediate resize.
+        # CLIP ultimately uses only the center; discard the distant ends first.
+        if width > 16 * height:
+            left = (width - 16 * height) // 2
+            pil_image = pil_image.crop((left, 0, left + 16 * height, height))
+        elif height > 16 * width:
+            top = (height - 16 * width) // 2
+            pil_image = pil_image.crop((0, top, width, top + 16 * width))
+        width, height = pil_image.size
+        ratio = edge / min(width, height)
+        pil_image = pil_image.resize((int(width * ratio), int(height * ratio)), Image.Resampling.BICUBIC)
+        crop = config["crop_size"]
+        left = round((pil_image.width - crop["width"]) / 2)
+        top = round((pil_image.height - crop["height"]) / 2)
+        pil_image = pil_image.crop((left, top, left + crop["width"], top + crop["height"]))
+        pixels = np.asarray(pil_image, dtype=np.float32) * np.float32(config["rescale_factor"])
+        pixels = (pixels - np.array(config["image_mean"], dtype=np.float32)) / np.array(config["image_std"], dtype=np.float32)
+        pixels = np.ascontiguousarray(pixels.transpose(2, 0, 1)[None])
+        if self.model.get_inputs()[0].type == "tensor(float16)":
+            pixels = pixels.astype(np.float16)
+        return self.normalize(self.model.run(["image_embeds"], {"pixel_values": pixels})[0])
+
+    def get_embedding_dimension(self):
+        return 512
 
 
 class CLIPService:
     def __init__(self):
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model = None
-        self.preprocess = None
-        self.tokenizer = None
-        
+        self.engine = None
+        self._lock = threading.RLock()
+
+    @property
+    def model(self):
+        return self.engine.model if self.engine is not None else None
+
+    @property
+    def embedding_model(self):
+        if settings.clip_backend == "onnx":
+            conversion = Q8_BUILD_ID if settings.onnx_precision == "q8f16" else settings.onnx_precision
+            return f"clip-vit-base-patch32:onnx-{conversion}:{ONNX_REVISION}:v2"
+        return f"{settings.clip_model}:{settings.clip_pretrained}:torch:v1"
+
     def load_model(self):
-        """Cargar modelo CLIP"""
-        print(f"Loading CLIP model: {settings.clip_model} ({settings.clip_pretrained})")
-        print(f"Using device: {self.device}")
-        
-        # Crear directorio de caché si no existe
-        os.makedirs(settings.cache_dir, exist_ok=True)
-        
-        # Cargar modelo con caché
-        self.model, _, self.preprocess = open_clip.create_model_and_transforms(
-            settings.clip_model,
-            pretrained=settings.clip_pretrained,
-            device=self.device,
-            cache_dir=settings.cache_dir
-        )
-        self.tokenizer = open_clip.get_tokenizer(settings.clip_model)
-        self.model.eval()
-        
-        print("CLIP model loaded successfully")
-    
+        with self._lock:
+            if settings.clip_backend == "onnx":
+                self.engine = ONNXCLIP()
+            else:
+                from app.services.clip_torch import CLIPService as TorchCLIP
+                import torch
+                torch.set_num_threads(max(1, settings.inference_threads))
+                self.engine = TorchCLIP()
+            self.engine.load_model()
+            release_unused_memory()
+
     def encode_text(self, text: str) -> np.ndarray:
-        """Extraer embedding de texto"""
-        if self.model is None:
-            raise RuntimeError("Model not loaded. Call load_model() first.")
-        
-        with torch.no_grad():
-            text_tokens = self.tokenizer([text]).to(self.device)
-            text_features = self.model.encode_text(text_tokens)
-            text_features /= text_features.norm(dim=-1, keepdim=True)
-            
-        return text_features.cpu().numpy()[0]
-    
+        with self._lock:
+            try:
+                return self.engine.encode_text(text)
+            finally:
+                release_unused_memory()
+
     def encode_image(self, image: Union[Image.Image, str, bytes]) -> np.ndarray:
-        """Extraer embedding de imagen"""
-        if self.model is None:
-            raise RuntimeError("Model not loaded. Call load_model() first.")
-        
-        # Cargar imagen según el tipo
-        if isinstance(image, str):
-            pil_image = Image.open(image).convert('RGB')
-        elif isinstance(image, bytes):
-            import io
-            pil_image = Image.open(io.BytesIO(image)).convert('RGB')
-        elif isinstance(image, Image.Image):
-            pil_image = image.convert('RGB')
-        else:
-            raise ValueError("image must be a PIL Image, file path, or bytes")
-        
-        # Preprocesar y extraer features
-        with torch.no_grad():
-            image_tensor = self.preprocess(pil_image).unsqueeze(0).to(self.device)
-            image_features = self.model.encode_image(image_tensor)
-            image_features /= image_features.norm(dim=-1, keepdim=True)
-            
-        return image_features.cpu().numpy()[0]
-    
-    def compute_similarity(self, embedding1: np.ndarray, embedding2: np.ndarray) -> float:
-        """
-        Calcular similitud coseno entre dos embeddings
-        Retorna un valor entre -1 y 1:
-        - 1 = idénticos
-        - 0 = ortogonales (no relacionados)
-        - -1 = opuestos
-        """
-        # Los embeddings de CLIP ya están normalizados (norma = 1)
-        # Producto punto = cosine similarity directamente
-        similarity = np.dot(embedding1, embedding2)
-        
-        return float(similarity)
-    
-    def validate_image_text_similarity(
-        self, 
-        image: Union[Image.Image, str, bytes], 
-        text: str,
-        threshold: float = None
-    ) -> Tuple[bool, float]:
-        """
-        Validar que una imagen y un texto sean consistentes
-        
-        Args:
-            image: Imagen a validar
-            text: Texto descriptivo de la imagen
-            threshold: Umbral de similitud (usa config por defecto si None)
-        
-        Returns:
-            (es_valido, score_similitud)
-        """
-        if threshold is None:
-            threshold = settings.similarity_threshold
-        
-        # Extraer embeddings
-        image_embedding = self.encode_image(image)
-        text_embedding = self.encode_text(text)
-        
-        # Calcular similitud
-        similarity = self.compute_similarity(image_embedding, text_embedding)
-        
-        # Validar contra umbral
-        is_valid = similarity >= threshold
-        
-        return is_valid, similarity
-    
+        with self._lock:
+            try:
+                return self.engine.encode_image(image)
+            finally:
+                release_unused_memory()
+
+    @staticmethod
+    def compute_similarity(embedding1, embedding2) -> float:
+        return float(np.dot(embedding1, embedding2))
+
+    def validate_image_text_similarity(self, image, text, threshold=None) -> Tuple[bool, float]:
+        with self._lock:
+            score = self.compute_similarity(self.encode_image(image), self.encode_text(text))
+        return score >= (settings.similarity_threshold if threshold is None else threshold), score
+
     def get_embedding_dimension(self) -> int:
-        """Obtener dimensión del embedding"""
-        if self.model is None:
-            raise RuntimeError("Model not loaded. Call load_model() first.")
-        return self.model.visual.output_dim
+        return self.engine.get_embedding_dimension()
 
 
-# Instancia singleton
 clip_service = CLIPService()
