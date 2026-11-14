@@ -66,15 +66,20 @@ jobs:
             -e FAISS_INDEX_PATH=/tmp/drive-smoke/faiss.bin \
             visiontext-backend:ci \
             python -m uvicorn drive_smoke_app:app --app-dir /app/tests --host 127.0.0.1 --port 8008 --workers 1
-          python3 -m venv .ci-env
-          .ci-env/bin/pip install -q httpx==0.27.2 Pillow==11.0.0
-          .ci-env/bin/python scripts/smoke_cloud.py --output reports/ci-cloud-smoke.json
+          # The client runs outside the API's memory limit, using the same Python 3.12 image.
+          # Do not depend on the runner's changing system Python/Pillow ABI.
+          smoke_exit=0
+          docker run --rm --network host -v "$PWD:/app" -w /app visiontext-backend:ci \
+            sh -c "pip install -q httpx==0.27.2 && python scripts/smoke_cloud.py --output reports/ci-cloud-smoke.json" || smoke_exit=$?
           docker exec visiontext-cloud-test python -c 'from pathlib import Path; import json; root=Path("/sys/fs/cgroup"); print(json.dumps({name:(root/name).read_text().strip() for name in ["memory.max","memory.swap.max","memory.peak","memory.events"] if (root/name).is_file()},indent=2))' > reports/ci-cloud-memory.json
           cat reports/ci-cloud-memory.json
+          exit "$smoke_exit"
 
       - name: Logs de la prueba de integración
         if: always()
-        run: docker logs visiontext-cloud-test || true
+        run: |
+          docker logs visiontext-cloud-test || true
+          docker inspect visiontext-cloud-test --format '{{json .State}}' || true
 
       - name: Guardar resultados de integración
         if: always()
