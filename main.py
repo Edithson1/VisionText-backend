@@ -25,6 +25,7 @@ from app.services.storage_errors import StorageError
 from app.services.validation import content_validator
 from app.services.auth import verify_admin_credentials, create_access_token, verify_token
 from app.services.rate_limit import LoginRateLimiter
+from app.android_download import android_download_router
 
 
 ip_login_limiter = LoginRateLimiter(settings.login_max_attempts_per_ip, settings.login_window_seconds)
@@ -101,6 +102,7 @@ app = FastAPI(
     version="2.1.0",
     lifespan=lifespan
 )
+app.include_router(android_download_router(lambda: storage_service))
 
 
 @app.exception_handler(StorageError)

@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from email.parser import BytesParser
 from email.policy import default
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import hashlib
 import json
 import re
 import threading
@@ -28,7 +29,8 @@ class DriveState:
     def create(self, metadata, data=b""):
         self.counter += 1
         file_id = f"fake-drive-file-{self.counter}"
-        self.files[file_id] = {**metadata, "id": file_id, "trashed": False, "data": data}
+        self.files[file_id] = {**metadata, "id": file_id, "trashed": False, "data": data,
+                               "size": str(len(data)), "md5Checksum": hashlib.md5(data).hexdigest()}
         return file_id
 
 
@@ -64,7 +66,7 @@ def drive_server():
             self.end_headers()
             try:
                 self.wfile.write(data)
-            except (BrokenPipeError, ConnectionResetError):
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
                 pass
 
         def do_POST(self):
@@ -75,6 +77,9 @@ def drive_server():
 
         def do_DELETE(self):
             self.handle_call("DELETE")
+
+        def do_PATCH(self):
+            self.handle_call("PATCH")
 
         def handle_call(self, method):
             parsed = urlparse(self.path)
@@ -97,7 +102,8 @@ def drive_server():
                 return self.reply(failures.pop(0), {"error": {"message": "simulated upstream failure"}})
             if key in state.delays:
                 time.sleep(state.delays[key])
-            if method == "POST" and path.endswith("/files"):
+            if ((method == "POST" and path.endswith("/files"))
+                    or (method == "PATCH" and path.startswith("/upload/drive/v3/files/"))):
                 if path.startswith("/upload/"):
                     if not self.headers.get("Content-Type", "").startswith("multipart/related;"):
                         return self.reply(400, {"error": "expected multipart/related"})
@@ -110,7 +116,15 @@ def drive_server():
                     metadata, data = json.loads(body), b""
                 if state.reject_upload_suffix and metadata.get("name", "").endswith(state.reject_upload_suffix):
                     return self.reply(503)
-                return self.reply(200, {"id": state.create(metadata, data)})
+                if method == "PATCH":
+                    file_id = unquote(path.removeprefix("/upload/drive/v3/files/"))
+                    if file_id not in state.files:
+                        return self.reply(404)
+                    state.files[file_id].update(metadata, data=data, size=str(len(data)),
+                                                md5Checksum=hashlib.md5(data).hexdigest())
+                else:
+                    file_id = state.create(metadata, data)
+                return self.reply(200, {k: v for k, v in state.files[file_id].items() if k != "data"})
             if method == "GET" and path == "/drive/v3/files":
                 files = [{k: v for k, v in item.items() if k != "data"} for item in state.files.values()
                          if match_query(item, params.get("q", [""])[0])]

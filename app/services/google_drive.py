@@ -1,5 +1,6 @@
 """Private Drive file storage; the catalog and embeddings remain in PostgreSQL."""
 from dataclasses import dataclass, field
+import hashlib
 import json
 import threading
 from urllib.parse import quote
@@ -14,6 +15,8 @@ from app.services.storage_errors import StorageError
 DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file"
 TOKEN_URI = "https://oauth2.googleapis.com/token"
 FOLDER_MIME = "application/vnd.google-apps.folder"
+APK_MIME = "application/vnd.android.package-archive"
+APK_NAME = "VisionText.apk"
 
 
 @dataclass(frozen=True)
@@ -202,6 +205,54 @@ class GoogleDriveStorage:
 
     def get_thumbnail(self, key):
         return self._get(key, "thumbnails")
+
+    def _android_release_id(self):
+        if not self.folder_id:
+            raise StorageError("Configura la carpeta de Google Drive del proyecto")
+        query = self._tag_query() + " and '" + self._q(self.folder_id) + "' in parents"
+        query += " and appProperties has { key='visiontext_kind' and value='android_apk' }"
+        found = list(self._list(query))
+        if len(found) > 1:
+            raise StorageError("Hay varias APK publicadas. Conserva una sola APK activa de VisionText.")
+        return found[0]["id"] if found else None
+
+    def publish_android_release(self, data, version_name, version_code):
+        """Replace the private project APK in place, preserving its Drive file ID."""
+        with self._lock:
+            file_id = self._android_release_id()
+            digest = hashlib.sha256(data).hexdigest()
+            metadata = {"name": APK_NAME, "mimeType": APK_MIME, "appProperties": {
+                "visiontext_project": self.config.namespace, "visiontext_kind": "android_apk",
+                "version_name": str(version_name), "version_code": str(version_code), "sha256": digest,
+            }}
+            if not file_id:
+                metadata["parents"] = [self.folder_id]
+            boundary = uuid.uuid4().hex
+            body = (f"--{boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n".encode()
+                    + json.dumps(metadata).encode() + f"\r\n--{boundary}\r\nContent-Type: {APK_MIME}\r\n\r\n".encode()
+                    + data + f"\r\n--{boundary}--\r\n".encode())
+            path = "/files/" + quote(file_id, safe="") if file_id else "/files"
+            response = self._request("PATCH" if file_id else "POST", path, upload=True,
+                                     params={"uploadType": "multipart", "fields": "id,size,md5Checksum"},
+                                     headers={"Content-Type": f"multipart/related; boundary={boundary}"}, data=body)
+            try:
+                result = response.json()
+            finally:
+                response.close()
+            if (int(result.get("size", -1)) != len(data)
+                    or result.get("md5Checksum") != hashlib.md5(data).hexdigest()):
+                raise StorageError("Drive no confirmó la integridad de la APK. Vuelve a publicarla.")
+            return {"file_id": result["id"], "filename": APK_NAME, "size": len(data), "sha256": digest,
+                    "version_name": str(version_name), "version_code": int(version_code)}
+
+    def open_android_release(self):
+        """Open only the tagged APK; callers must close the streamed response."""
+        with self._lock:
+            file_id = self._android_release_id()
+            if not file_id:
+                return None
+            return self._request("GET", "/files/" + quote(file_id, safe=""), params={"alt": "media"},
+                                 headers={"Accept-Encoding": "identity"}, stream=True, missing_ok=True)
 
     def _delete(self, key, kind):
         with self._lock:
