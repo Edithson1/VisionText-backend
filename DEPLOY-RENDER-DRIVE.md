@@ -11,6 +11,11 @@ La organización de archivos privados está en [ENVIRONMENT.md](ENVIRONMENT.md).
 Tu contraseña de Supabase se escribe en **`.env.render`, variable `POSTGRES_PASSWORD`**.
 Las plantillas `.example` se conservan sin secretos.
 
+La web publicada es `https://visiontext-sigma.vercel.app`. El Blueprint incluye ese
+origen exacto en `CORS_ORIGINS`, junto con localhost para desarrollo. Si el Blueprint
+no se sincroniza automáticamente, aplica su actualización desde Render o configura
+esa misma lista en las variables de entorno del servicio y despliega el cambio.
+
 ## 1. Autorizar Google Drive y crear la carpeta
 
 El ID de cliente está preparado en los ejemplos. El secreto del cliente y el
