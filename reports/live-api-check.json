@@ -1,0 +1,256 @@
+{
+  "target": "https://visiontext-backend.onrender.com",
+  "checked_at_utc": "2026-11-16T04:00:11.190982+00:00",
+  "real_services": true,
+  "checks": [
+    {
+      "name": "root",
+      "method": "GET",
+      "path": "/",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 43.578
+    },
+    {
+      "name": "health",
+      "method": "GET",
+      "path": "/api/health",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 1.016
+    },
+    {
+      "name": "openapi",
+      "method": "GET",
+      "path": "/openapi.json",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "cors_http://localhost:5173",
+      "method": "OPTIONS",
+      "path": "/api/search/text",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.203
+    },
+    {
+      "name": "cors_http://127.0.0.1:5173",
+      "method": "OPTIONS",
+      "path": "/api/search/text",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "requires_auth_/api/admin/images",
+      "method": "GET",
+      "path": "/api/admin/images",
+      "expected_status": 401,
+      "status": 401,
+      "passed": true,
+      "seconds": 0.187
+    },
+    {
+      "name": "requires_auth_/api/admin/storage",
+      "method": "GET",
+      "path": "/api/admin/storage",
+      "expected_status": 401,
+      "status": 401,
+      "passed": true,
+      "seconds": 0.188
+    },
+    {
+      "name": "requires_auth_/api/upload",
+      "method": "POST",
+      "path": "/api/upload",
+      "expected_status": 401,
+      "status": 401,
+      "passed": true,
+      "seconds": 0.187
+    },
+    {
+      "name": "requires_auth_/api/admin/images/not-owned-test",
+      "method": "DELETE",
+      "path": "/api/admin/images/not-owned-test",
+      "expected_status": 401,
+      "status": 401,
+      "passed": true,
+      "seconds": 0.219
+    },
+    {
+      "name": "empty_query_rejected",
+      "method": "POST",
+      "path": "/api/search/text",
+      "expected_status": 422,
+      "status": 422,
+      "passed": true,
+      "seconds": 0.188
+    },
+    {
+      "name": "non_image_rejected",
+      "method": "POST",
+      "path": "/api/search/image",
+      "expected_status": 400,
+      "status": 400,
+      "passed": true,
+      "seconds": 0.218
+    },
+    {
+      "name": "missing_image",
+      "method": "GET",
+      "path": "/api/images/missing-d0a8e5e0-c24f-41c0-84b0-ce099c3ffd7b",
+      "expected_status": 404,
+      "status": 404,
+      "passed": true,
+      "seconds": 0.579
+    },
+    {
+      "name": "missing_thumbnail",
+      "method": "GET",
+      "path": "/api/thumbnails/missing-d0a8e5e0-c24f-41c0-84b0-ce099c3ffd7b",
+      "expected_status": 404,
+      "status": 404,
+      "passed": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "android_form_login",
+      "method": "POST",
+      "path": "/api/admin/login",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.203
+    },
+    {
+      "name": "web_multipart_login",
+      "method": "POST",
+      "path": "/api/admin/login",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.203
+    },
+    {
+      "name": "admin_catalog",
+      "method": "GET",
+      "path": "/api/admin/images",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 1.015
+    },
+    {
+      "name": "drive_status",
+      "method": "GET",
+      "path": "/api/admin/storage",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.813
+    },
+    {
+      "name": "upload_to_real_drive",
+      "method": "POST",
+      "path": "/api/upload",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 16.25
+    },
+    {
+      "name": "text_search",
+      "method": "POST",
+      "path": "/api/search/text",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 3.328
+    },
+    {
+      "name": "image_search",
+      "method": "POST",
+      "path": "/api/search/image",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 5.563
+    },
+    {
+      "name": "download_image",
+      "method": "GET",
+      "path": "/api/images/615f03b6-6942-4b7f-a39e-70d32cdac99c",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.875
+    },
+    {
+      "name": "download_thumbnail",
+      "method": "GET",
+      "path": "/api/thumbnails/615f03b6-6942-4b7f-a39e-70d32cdac99c",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.875
+    },
+    {
+      "name": "delete_own_test_image",
+      "method": "DELETE",
+      "path": "/api/admin/images/615f03b6-6942-4b7f-a39e-70d32cdac99c",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 1.641
+    },
+    {
+      "name": "image_absent_after_delete",
+      "method": "GET",
+      "path": "/api/images/615f03b6-6942-4b7f-a39e-70d32cdac99c",
+      "expected_status": 404,
+      "status": 404,
+      "passed": true,
+      "seconds": 0.516
+    },
+    {
+      "name": "thumbnail_absent_after_delete",
+      "method": "GET",
+      "path": "/api/thumbnails/615f03b6-6942-4b7f-a39e-70d32cdac99c",
+      "expected_status": 404,
+      "status": 404,
+      "passed": true,
+      "seconds": 0.562
+    },
+    {
+      "name": "catalog_absent_after_delete",
+      "method": "GET",
+      "path": "/api/admin/images?limit=500",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.953
+    },
+    {
+      "name": "health_after",
+      "method": "GET",
+      "path": "/api/health",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "seconds": 0.985
+    }
+  ],
+  "initial_image_count": 0,
+  "returned_urls_match_deployed_api": true,
+  "temporary_image_deleted": true,
+  "final_image_count": 0,
+  "final_vector_count": 0,
+  "passed": true
+}
