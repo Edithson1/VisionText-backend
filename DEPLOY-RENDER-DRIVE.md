@@ -132,6 +132,11 @@ el número de archivos.
 
 El catálogo de Supabase comienza vacío. Las 45 imágenes de la instalación local
 no se transfieren automáticamente: se conservan en su base local y en RustFS.
+Para copiar ese catálogo conservando los nombres y descripciones, utiliza
+[MIGRAR-CATALOGO.md](MIGRAR-CATALOGO.md). La copia se realiza explícitamente por la
+API, y se comprueba que los originales, miniaturas y vectores queden disponibles.
+En este proyecto esa copia se completó el 15 de noviembre de 2026: 45 imágenes,
+45 miniaturas y 45 vectores. [Resultado verificado](reports/MIGRACION-LOCAL-NUBE.md).
 Puedes subirlas a la nube desde la app o ejecutar el cargador existente contra
 la URL del backend, con las credenciales del administrador de ese despliegue:
 

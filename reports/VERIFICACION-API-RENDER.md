@@ -45,5 +45,7 @@ El script lee el administrador de `.env.render` y guarda un informe sin secretos
 Se siguió la guía de pruebas de API con un cliente HTTP y el contrato OpenAPI;
 no depende del CLI de Postman ni publica resultados en un workspace externo.
 
-No se proporcionó el dominio de la web publicada. Cuando esté disponible hay que
-comprobar su origen CORS exacto en Render. Estas pruebas cubren la web local.
+Al ejecutar esta prueba inicial todavía no se había proporcionado el dominio
+de la web. Posteriormente se configuró CORS para `https://visiontext-sigma.vercel.app`
+y se copiaron las 45 imágenes del catálogo local. La web publicada se comprobó con
+resultados e imágenes visibles: [MIGRACION-LOCAL-NUBE.md](MIGRACION-LOCAL-NUBE.md).
