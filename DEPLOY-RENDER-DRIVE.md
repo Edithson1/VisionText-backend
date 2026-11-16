@@ -137,6 +137,9 @@ Para copiar ese catálogo conservando los nombres y descripciones, utiliza
 API, y se comprueba que los originales, miniaturas y vectores queden disponibles.
 En este proyecto esa copia se completó el 15 de noviembre de 2026: 45 imágenes,
 45 miniaturas y 45 vectores. [Resultado verificado](reports/MIGRACION-LOCAL-NUBE.md).
+Después se cargó el dataset completo de 1.575 imágenes. Consulta
+[IMPORTAR-DATASET.md](IMPORTAR-DATASET.md) y el
+[informe de la carga completa](reports/DATASET-COMPLETO.md).
 Puedes subirlas a la nube desde la app o ejecutar el cargador existente contra
 la URL del backend, con las credenciales del administrador de ese despliegue:
 

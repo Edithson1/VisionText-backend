@@ -1,0 +1,464 @@
+{
+  "target": "https://visiontext-backend.onrender.com",
+  "started_at_utc": "2026-11-16T05:56:02.397430+00:00",
+  "dataset_files": 1575,
+  "checks": [
+    {
+      "name": "login",
+      "status": 200,
+      "seconds": 0.203
+    },
+    {
+      "name": "admin_page_1",
+      "status": 200,
+      "seconds": 0.937
+    },
+    {
+      "name": "admin_page_2",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_3",
+      "status": 200,
+      "seconds": 0.828
+    },
+    {
+      "name": "admin_page_4",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_5",
+      "status": 200,
+      "seconds": 0.86
+    },
+    {
+      "name": "admin_page_6",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_7",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_8",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_9",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_10",
+      "status": 200,
+      "seconds": 0.844
+    },
+    {
+      "name": "admin_page_11",
+      "status": 200,
+      "seconds": 0.89
+    },
+    {
+      "name": "admin_page_12",
+      "status": 200,
+      "seconds": 1.219
+    },
+    {
+      "name": "admin_page_13",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_14",
+      "status": 200,
+      "seconds": 0.844
+    },
+    {
+      "name": "admin_page_15",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_16",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_17",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_18",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_19",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_20",
+      "status": 200,
+      "seconds": 0.86
+    },
+    {
+      "name": "admin_page_21",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_22",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_23",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_24",
+      "status": 200,
+      "seconds": 0.86
+    },
+    {
+      "name": "admin_page_25",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_26",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_27",
+      "status": 200,
+      "seconds": 0.844
+    },
+    {
+      "name": "admin_page_28",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_29",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_30",
+      "status": 200,
+      "seconds": 0.86
+    },
+    {
+      "name": "admin_page_31",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_32",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_33",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_34",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_35",
+      "status": 200,
+      "seconds": 0.844
+    },
+    {
+      "name": "admin_page_36",
+      "status": 200,
+      "seconds": 0.844
+    },
+    {
+      "name": "admin_page_37",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_38",
+      "status": 200,
+      "seconds": 1.156
+    },
+    {
+      "name": "admin_page_39",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_40",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_41",
+      "status": 200,
+      "seconds": 0.86
+    },
+    {
+      "name": "admin_page_42",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_43",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_44",
+      "status": 200,
+      "seconds": 0.86
+    },
+    {
+      "name": "admin_page_45",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_46",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_47",
+      "status": 200,
+      "seconds": 0.844
+    },
+    {
+      "name": "admin_page_48",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "admin_page_49",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_50",
+      "status": 200,
+      "seconds": 0.86
+    },
+    {
+      "name": "admin_page_51",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_52",
+      "status": 200,
+      "seconds": 0.859
+    },
+    {
+      "name": "admin_page_53",
+      "status": 200,
+      "seconds": 0.844
+    },
+    {
+      "name": "vercel_preflight",
+      "status": 200,
+      "seconds": 0.188
+    },
+    {
+      "name": "text_african_elephant",
+      "status": 200,
+      "seconds": 9.656
+    },
+    {
+      "name": "text_alpaca",
+      "status": 200,
+      "seconds": 9.5
+    },
+    {
+      "name": "text_zebra",
+      "status": 200,
+      "seconds": 9.39
+    },
+    {
+      "name": "image_search",
+      "status": 200,
+      "seconds": 12.094
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 0.875
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 0.86
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.375
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.39
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.407
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.25
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.328
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.453
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.281
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.453
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.36
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.375
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.406
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.375
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.359
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.344
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.39
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.422
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.641
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.437
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.328
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.329
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_original",
+      "status": 200,
+      "seconds": 1.328
+    },
+    {
+      "name": "sample_thumbnail",
+      "status": 200,
+      "seconds": 1.391
+    }
+  ],
+  "database_total": 1575,
+  "dataset_records": 1575,
+  "missing_records": [],
+  "duplicate_filenames": [],
+  "drive_originals": 1575,
+  "drive_thumbnails": 1575,
+  "missing_drive_files": [],
+  "live_images": 1575,
+  "live_vectors": 1575,
+  "admin_pages_verified": 53,
+  "admin_unique_records": 1575,
+  "text_searches": [
+    {
+      "query": "African elephant",
+      "seconds": 9.449862957000732,
+      "first_filename": "african_elephant_african_elephant-0068.jpg"
+    },
+    {
+      "query": "alpaca",
+      "seconds": 9.318198919296265,
+      "first_filename": "alpaca_alpaca-0327.jpg"
+    },
+    {
+      "query": "zebra",
+      "seconds": 9.216706991195679,
+      "first_filename": "zebra_zebra-0212.jpg"
+    }
+  ],
+  "image_search_seconds": 11.855713367462158,
+  "sample_image_pairs_downloaded": 13,
+  "passed": true,
+  "finished_at_utc": "2026-11-16T05:58:14.909966+00:00"
+}
