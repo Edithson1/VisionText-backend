@@ -6,6 +6,7 @@ Sistema que integra un modelo multimodal CLIP, permitiendo la interpretación y 
 - Plantillas públicas: [.env.example](.env.example) (local) y [.env.render.example](.env.render.example) (nube).
 - Medición del perfil ligero y límites de Render: [reports/COMPARACION-RENDER.md](reports/COMPARACION-RENDER.md)
 - Despliegue preparado para **Edithson1/VisionText-backend**: [Render + Google Drive + Supabase](DEPLOY-RENDER-DRIVE.md).
+- Carga y verificación del dataset de 1.575 imágenes: [IMPORTAR-DATASET.md](IMPORTAR-DATASET.md).
 
 ## Perfil ligero de inferencia
 

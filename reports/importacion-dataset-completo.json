@@ -1,0 +1,20 @@
+{
+  "dataset_count": 1575,
+  "already_present": 151,
+  "imported": 1424,
+  "failed": [],
+  "started_at_utc": "2026-11-16T05:12:25.281795+00:00",
+  "phase": "import_finished_requires_index_reload",
+  "dry_run": false,
+  "requires_index_reload": true,
+  "pid": 2950,
+  "workers": 8,
+  "inference_threads": 2,
+  "pending_at_start": 1424,
+  "cloud_total": 1575,
+  "dataset_present": 1575,
+  "missing": [],
+  "valid_dataset_records": 1575,
+  "passed": true,
+  "finished_at_utc": "2026-11-16T05:29:08.396260+00:00"
+}
